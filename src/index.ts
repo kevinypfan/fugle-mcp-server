@@ -1,0 +1,117 @@
+#!/usr/bin/env node
+
+import {
+  McpServer,
+  ResourceTemplate,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
+import {
+  MasterlinkSDK,
+  BSAction,
+  TimeInForce,
+  OrderType,
+  PriceType,
+  MarketType,
+  Account,
+} from "masterlink-sdk";
+import { RestStockClient } from "masterlink-sdk/marketdata/rest/stock/client";
+import { RestFutOptClient } from "masterlink-sdk/marketdata/rest/futopt/client";
+import {
+  registerCandlesTools,
+  registerQuoteTools,
+  registerTickersTools,
+  registerTickerTools,
+  registerTradesTools,
+  registerVolumesTools,
+} from "./marketdata/intraday";
+import {
+  registerActivesTools,
+  registerMoversTools,
+  registerQuotesTools,
+} from "./marketdata/snapshot";
+import { registerHistoricalCandlesTools } from "./marketdata/historical";
+
+const { NOTIONAL_ID, ACCOUNT_PASS, CERT_PATH, CERT_PASS } = process.env;
+
+if (!NOTIONAL_ID || !ACCOUNT_PASS || !CERT_PATH || !CERT_PASS) {
+  console.error(
+    "All environment variables (NOTIONAL_ID, ACCOUNT_PASS, CERT_PATH, CERT_PASS) are required"
+  );
+  process.exit(1);
+}
+
+class FugleMcpServer {
+  private server: McpServer;
+  private sdk: MasterlinkSDK;
+  private accounts: Account[];
+  private stock: RestStockClient;
+  private futopt: RestFutOptClient;
+
+  constructor() {
+    this.server = new McpServer({
+      name: "fugle-mcp-server",
+      version: "1.0.0",
+    });
+
+    this.sdk = new MasterlinkSDK(null);
+
+    this.accounts = this.sdk.login(
+      NOTIONAL_ID as string,
+      ACCOUNT_PASS as string,
+      CERT_PATH as string,
+      CERT_PASS as string
+    );
+
+    this.sdk.initRealtime(this.accounts[0]);
+    if (!this.sdk.marketdata) {
+      console.error("Failed to initialize marketdata");
+      process.exit(1);
+    }
+    this.stock = this.sdk.marketdata.restClient.stock;
+    this.futopt = this.sdk.marketdata.restClient.futopt;
+
+    this.registerMarketdataTools();
+  }
+
+  registerMarketdataTools() {
+    this.registerIntradayTools();
+    this.registerSnapshotTools();
+    this.registerHistoricalTools();
+  }
+
+  registerHistoricalTools() {
+    registerHistoricalCandlesTools(this.server, this.stock);
+  }
+
+  registerIntradayTools() {
+    registerTickerTools(this.server, this.stock);
+    registerQuoteTools(this.server, this.stock);
+    registerCandlesTools(this.server, this.stock);
+    registerTickersTools(this.server, this.stock);
+    registerTradesTools(this.server, this.stock);
+    registerVolumesTools(this.server, this.stock);
+  }
+
+  registerSnapshotTools() {
+    registerMoversTools(this.server, this.stock);
+    registerActivesTools(this.server, this.stock);
+    registerQuotesTools(this.server, this.stock);
+  }
+
+  async runServer() {
+    const transport = new StdioServerTransport();
+    await this.server.connect(transport);
+    console.error("Fugle MCP Server running on stdio");
+  }
+}
+
+function main() {
+  const fugleMcpServer = new FugleMcpServer();
+  fugleMcpServer.runServer().catch((error) => {
+    console.error("Fatal error in main():", error);
+    process.exit(1);
+  });
+}
+
+main();
