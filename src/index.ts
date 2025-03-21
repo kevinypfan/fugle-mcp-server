@@ -1,20 +1,8 @@
 #!/usr/bin/env node
 
-import {
-  McpServer,
-  ResourceTemplate,
-} from "@modelcontextprotocol/sdk/server/mcp.js";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
-import {
-  MasterlinkSDK,
-  BSAction,
-  TimeInForce,
-  OrderType,
-  PriceType,
-  MarketType,
-  Account,
-} from "masterlink-sdk";
+import { MasterlinkSDK, Account } from "masterlink-sdk";
 import { RestStockClient } from "masterlink-sdk/marketdata/rest/stock/client";
 import { RestFutOptClient } from "masterlink-sdk/marketdata/rest/futopt/client";
 import {
@@ -31,6 +19,31 @@ import {
   registerQuotesTools,
 } from "./marketdata/snapshot";
 import { registerHistoricalCandlesTools } from "./marketdata/historical";
+import {
+  registerAccountStatementTools,
+  registerBankBalanceTools,
+  registerInventoriesTools,
+  registerRealizedProfitAndLossesTools,
+  registerSkbankBalanceTools,
+  registerTodaySettlementTools,
+  registerTodayTradeSummaryTools,
+  registerTotalPnlTools,
+} from "./account";
+import {
+  registerAttentionStockTools,
+  registerDispositionStockTools,
+  registerFilledDetailTools,
+  registerFilledHistoryDetailTools,
+  registerFilledHistoryTools,
+  registerFilledQueryTools,
+  registerMarginQuotaTools,
+  registerModifyOrderTools,
+  registerModifyVolumeTools,
+  registerOrderHistoryTools,
+  registerOrderResultTools,
+  registerPlaceOrderTools,
+  registerShortDaytradeQuotaTools,
+} from "./trade";
 
 const { NOTIONAL_ID, ACCOUNT_PASS, CERT_PATH, CERT_PASS } = process.env;
 
@@ -72,6 +85,39 @@ class FugleMcpServer {
     this.futopt = this.sdk.marketdata.restClient.futopt;
 
     this.registerMarketdataTools();
+    this.registerAccountTools();
+    this.registerTradeTools();
+  }
+
+  registerAccountTools() {
+    registerTotalPnlTools(this.server, this.sdk, this.accounts[0]);
+    registerBankBalanceTools(this.server, this.sdk, this.accounts[0]);
+    registerInventoriesTools(this.server, this.sdk, this.accounts[0]);
+    registerRealizedProfitAndLossesTools(
+      this.server,
+      this.sdk,
+      this.accounts[0]
+    );
+    registerSkbankBalanceTools(this.server, this.sdk, this.accounts[0]);
+    registerAccountStatementTools(this.server, this.sdk, this.accounts[0]);
+    registerTodayTradeSummaryTools(this.server, this.sdk, this.accounts[0]);
+    registerTodaySettlementTools(this.server, this.sdk, this.accounts[0]);
+  }
+
+  registerTradeTools() {
+    registerAttentionStockTools(this.server, this.sdk, this.accounts);
+    registerDispositionStockTools(this.server, this.sdk, this.accounts);
+    registerFilledQueryTools(this.server, this.sdk, this.accounts);
+    registerFilledDetailTools(this.server, this.sdk, this.accounts);
+    registerFilledHistoryTools(this.server, this.sdk, this.accounts);
+    registerFilledHistoryDetailTools(this.server, this.sdk, this.accounts);
+    registerMarginQuotaTools(this.server, this.sdk, this.accounts);
+    registerOrderHistoryTools(this.server, this.sdk, this.accounts);
+    registerShortDaytradeQuotaTools(this.server, this.sdk, this.accounts);
+    registerModifyOrderTools(this.server, this.sdk, this.accounts);
+    registerModifyVolumeTools(this.server, this.sdk, this.accounts);
+    registerOrderResultTools(this.server, this.sdk, this.accounts);
+    registerPlaceOrderTools(this.server, this.sdk, this.accounts);
   }
 
   registerMarketdataTools() {
