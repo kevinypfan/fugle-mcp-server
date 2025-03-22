@@ -1,10 +1,11 @@
-```
+```json
 {
   "mcpServers": {
     "slack": {
       "command": "docker",
       "args": [
         "run",
+        "--platform=linux/amd64",
         "-i",
         "--rm",
         "-e",
@@ -18,7 +19,7 @@
         "-e",
         "ENABLE_ORDER",
         "--mount", "type=bind,src=/path/to/cert.p12,dst=/app/cert.p12",
-        "docker.io/library/fugle-mcp-server"
+        "kevinypfan/fugle-mcp-server"
       ],
       "env": {
         "NOTIONAL_ID": "<身分證字號>",
