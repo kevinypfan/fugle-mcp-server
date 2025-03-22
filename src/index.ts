@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import fs from "fs";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { MasterlinkSDK, Account } from "masterlink-sdk";
@@ -45,13 +46,20 @@ import {
   registerShortDaytradeQuotaTools,
 } from "./trade";
 
-const { NOTIONAL_ID, ACCOUNT_PASS, CERT_PATH, CERT_PASS } = process.env;
+const { NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
 
-if (!NOTIONAL_ID || !ACCOUNT_PASS || !CERT_PATH || !CERT_PASS) {
+if (!NOTIONAL_ID || !ACCOUNT_PASS || !CERT_PASS) {
   console.error(
-    "All environment variables (NOTIONAL_ID, ACCOUNT_PASS, CERT_PATH, CERT_PASS) are required"
+    "All environment variables (NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS) are required"
   );
   process.exit(1);
+}
+
+const CERT_PATH = process.env.CERT_PATH || "/app/cert.p12";
+
+if (!fs.existsSync(CERT_PATH)) {
+  console.error(`Error: Certificate file not found at ${CERT_PATH}`);
+  process.exit(1); // Exit with error code
 }
 
 class FugleMcpServer {
