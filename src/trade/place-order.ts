@@ -55,6 +55,10 @@ export function registerPlaceOrderTools(
       orderType,
     }) => {
       try {
+        if (process.env.ENABLE_ORDER !== "true") {
+          throw new Error("下單功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )");
+        }
+
         // 處理 enum 轉換 - 添加預設值確保不會有 undefined
         let bsActionValue: BSAction;
         let marketTypeValue: MarketType;

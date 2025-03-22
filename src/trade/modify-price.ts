@@ -35,6 +35,9 @@ export function registerModifyOrderTools(
       priceType
     }) => {
       try {
+        if (process.env.ENABLE_ORDER !== "true") {
+          throw new Error("修改委託價格功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )");
+        }
         // 先獲取委託單資訊
         const orderResults = await sdk.stock.getOrderResults(accounts[0]);
         const targetOrder = orderResults.find(order => order.orderNo === orderNo);
