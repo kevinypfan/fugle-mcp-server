@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
+import skBankBalanceReference from "./references/sk-bank-balance.json";
 
 /**
  * 註冊新光銀行餘額查詢工具到 MCP Server
@@ -23,25 +24,12 @@ export function registerSkbankBalanceTools(
     async () => {
       try {
         // 透過SDK獲取新光銀行餘額資訊
-        const balanceData = await sdk.accounting.skbankBalance(account);
+        const data = await sdk.accounting.skbankBalance(account);
 
-        // 組建回應訊息
-        const responseText = `
-【新光銀行餘額資訊】
-
-帳戶基本資訊：
-- 證券帳號：${balanceData.custId || "無"}
-- 分公司代號：${balanceData.branchId || "無"}
-- 銀行帳號：${balanceData.bankAccount || "無"}
-- 幣別：${balanceData.currency || "TWD"}
-
-餘額資訊：
-- 帳戶餘額：${balanceData.balance} 元
-- 可用餘額：${balanceData.availableBalance} 元
-`;
+        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(skBankBalanceReference, null, 2)}\n\`\`\``;
 
         return {
-          content: [{ type: "text", text: responseText }],
+          content: [{ type: "text", text: response }],
         };
       } catch (error) {
         return {
