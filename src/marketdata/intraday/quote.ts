@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { RestStockClient } from "masterlink-sdk/marketdata/rest/stock/client";
 import { z } from "zod";
+import quoteReference from "./references/quote.json";
 
 /**
  * 註冊股票報價相關的工具到 MCP Server
@@ -24,63 +25,10 @@ export function registerQuoteTools(server: McpServer, stock: RestStockClient) {
           type: type === "oddlot" ? "oddlot" : undefined,
         });
 
-        // 計算漲跌幅百分比，格式化為小數點後2位
-        const changePercent = data.changePercent
-          ? data.changePercent.toFixed(2) + "%"
-          : "無漲跌幅資料";
-
-        // 判斷漲跌顏色
-        const priceColor =
-          data.change > 0 ? "紅色" : data.change < 0 ? "綠色" : "黑色";
-
-        // 格式化回應內容
-        let responseText = `
-【${data.symbol} ${data.name}】即時報價：
-價格: ${data.closePrice} (${
-          data.change >= 0 ? "+" + data.change : data.change
-        }, ${changePercent})
-開盤: ${data.openPrice} | 最高: ${data.highPrice} | 最低: ${data.lowPrice}
-成交量: ${data.total?.tradeVolume?.toLocaleString() || "無資料"} 張
-時間: ${new Date(data.lastUpdated / 1000).toLocaleTimeString("zh-TW")}
-        `;
-
-        // 如果有五檔資料，則加入
-        if (
-          data.bids &&
-          data.bids.length > 0 &&
-          data.asks &&
-          data.asks.length > 0
-        ) {
-          responseText += "\n買賣五檔：\n";
-
-          // 取得最多5檔
-          const maxPrices = Math.min(
-            5,
-            Math.max(data.bids.length, data.asks.length)
-          );
-
-          for (let i = 0; i < maxPrices; i++) {
-            const bid = data.bids[i]
-              ? `${data.bids[i].price}(${data.bids[i].size})`
-              : "無";
-            const ask = data.asks[i]
-              ? `${data.asks[i].price}(${data.asks[i].size})`
-              : "無";
-            responseText += `買${i + 1}: ${bid} | 賣${i + 1}: ${ask}\n`;
-          }
-        }
-
-        // 加入市場狀態
-        if (data.isClose) {
-          responseText += "\n市場狀態: 已收盤";
-        } else if (data.isOpen) {
-          responseText += "\n市場狀態: 交易中";
-        } else if (data.isTrial) {
-          responseText += "\n市場狀態: 試撮中";
-        }
+        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(quoteReference, null, 2)}\n\`\`\``;
 
         return {
-          content: [{ type: "text", text: responseText }],
+          content: [{ type: "text", text: response }],
         };
       } catch (error) {
         return {
