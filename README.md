@@ -1,7 +1,7 @@
 ```json
 {
   "mcpServers": {
-    "slack": {
+    "fugle-mcp-server": {
       "command": "docker",
       "args": [
         "run",
@@ -28,5 +28,25 @@
     }
   }
 }
+```
 
+```json
+{
+  "mcpServers": {
+    "fugle-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "fugle-mcp-server"
+      ],
+      "env": {
+        "NOTIONAL_ID": "<身分證字號>",
+        "ACCOUNT_PASS": "<帳戶密碼>",
+        "CERT_PASS": "<憑證密碼>",
+        "CERT_PATH": "<憑證位置>",
+        "ENABLE_ORDER": "<開啟下單功能 ex: true or false>"
+      }
+    }
+  }
+}
 ```
