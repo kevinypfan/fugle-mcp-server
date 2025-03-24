@@ -1,0 +1,7 @@
+{
+  "orderDate": { "type": "string", "desc": "委託日期" },
+  "orderTime": { "type": "string", "desc": "委託時間" },
+  "workDate": { "type": "string", "desc": "有效交易日期" },
+  "isPreOrder": { "type": "boolean", "desc": "預約單註記" },
+  "orderNo": { "type": "string", "desc": "委託書號" }
+}

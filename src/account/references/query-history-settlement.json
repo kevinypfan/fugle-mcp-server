@@ -1,0 +1,30 @@
+{
+  "accountSummary": {
+    "type": "object",
+    "desc": "帳戶摘要",
+    "properties": {
+      "marginPositionMarketValueSum": { "type": "string", "desc": "融資市值加總" },
+      "shortPositionMarketValueSum": { "type": "string", "desc": "融券市值加總" },
+      "shortCollateralSum": { "type": "string", "desc": "融券擔保品加總" },
+      "marginLimit": { "type": "string", "desc": "融資限額" },
+      "shortLimit": { "type": "string", "desc": "融券限額" },
+      "guaranteeAmountSum": { "type": "string", "desc": "融券保證金加總" },
+      "marginAmountSum": { "type": "string", "desc": "融資金額加總" },
+      "shortAmountSum": { "type": "string", "desc": "融券金額加總" },
+      "settlementToday": { "type": "string", "desc": "今日結算金額" },
+      "settlementYesterday": { "type": "string", "desc": "昨日結算金額" },
+      "settlementNet": { "type": "string", "desc": "結算淨額" }
+    }
+  },
+  "settlements": {
+    "type": "array",
+    "desc": "結算記錄",
+    "items": {
+      "branchId": { "type": "string", "desc": "分公司代號" },
+      "custId": { "type": "string", "desc": "帳號" },
+      "sDate": { "type": "string", "desc": "交割日期" },
+      "tDate": { "type": "string", "desc": "交易日期" },
+      "netAmount": { "type": "string", "desc": "淨收付金額" }
+    }
+  }
+}

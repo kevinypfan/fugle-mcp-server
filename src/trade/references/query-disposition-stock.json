@@ -1,0 +1,11 @@
+{
+  "symbol": { "type": "string", "desc": "股票代號" },
+  "abnormalRecommendationMark": { "type": "string", "desc": "異常推介註記" },
+  "abnormalDescription": { "type": "string", "desc": "異常說明" },
+  "specialAbnormalMark": { "type": "string", "desc": "特殊異常註記" },
+  "specialAbnormalDescription": { "type": "string", "desc": "特殊異常說明" },
+  "dispositionStockMark": { "type": "string", "desc": "處置股票註記" },
+  "dispositionDescription": { "type": "string", "desc": "處置說明" },
+  "internalControlCategory": { "type": "string", "desc": "內控類別" },
+  "internalControlDescription": { "type": "string", "desc": "內控類別說明" }
+}

@@ -1,0 +1,14 @@
+{
+  "symbol": { "type": "string", "desc": "股票代號" },
+  "kind": { "type": "string", "desc": "類別 (1: 融資, 2: 融券)" },
+  "tqty": { "type": "string", "desc": "資券限額: 數量、停資、停券、不限資" },
+  "stop": { "type": "string", "desc": "是否停止融資/融券交易 (Y: 是, N: 否)" },
+  "crPercentage": { "type": "string", "desc": "融資成數 (如: 0600 表 0.6)" },
+  "dbPercentage": { "type": "string", "desc": "融券成數 (如: 0900 表 0.9)" },
+  "blMark": { "type": "string", "desc": "融券核准記號" },
+  "crStatus": { "type": "string", "desc": "融資狀態 (查詢融資時才有) (如: 資0900 代表資成數)" },
+  "dbStatus": { "type": "string", "desc": "融券狀態 (查詢融券時才有) (如: 券0900 代表券成數)" },
+  "crFlag": { "type": "string", "desc": "信用交易資格: Y 無信用交易資格、N 有信用交易資格" },
+  "luMsg": { "type": "string", "desc": "平盤下是否可券賣" },
+  "dteMsg": { "type": "string", "desc": "是否可當沖、禁98戶" }
+}

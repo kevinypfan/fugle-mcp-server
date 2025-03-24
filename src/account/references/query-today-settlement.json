@@ -1,0 +1,55 @@
+{
+  "sDate": { "type": "string", "desc": "交割日期" },
+  "tDate": { "type": "string", "desc": "交易日期" },
+  "netAmount": { "type": "string", "desc": "總淨收付金額" },
+  "settleSum": {
+    "type": "object",
+    "desc": "現金結算彙總",
+    "properties": {
+      "buyAmount": { "type": "string", "desc": "今日現股買金額" },
+      "sellAmount": { "type": "string", "desc": "今日現股賣金額" },
+      "fee": { "type": "string", "desc": "手續費" },
+      "tax": { "type": "string", "desc": "交易稅" },
+      "netAmount": { "type": "string", "desc": "淨收付金額" }
+    }
+  },
+  "settleCreditSum": {
+    "type": "object",
+    "desc": "融資結算摘要",
+    "properties": {
+      "marginQuantity": { "type": "string", "desc": "當日融資額度" },
+      "marginQuantityLeft": { "type": "string", "desc": "當日可用融資餘額" },
+      "marginCollateral": { "type": "string", "desc": "融資自備款" },
+      "marginCollateralBuy": { "type": "string", "desc": "融資自備款買入" },
+      "marginCollateralSell": { "type": "string", "desc": "融資自備款賣出" },
+      "marginAmount": { "type": "string", "desc": "融資金額" },
+      "marginAmountBuy": { "type": "string", "desc": "融資買入金額" },
+      "marginAmountSell": { "type": "string", "desc": "融資賣出金額" },
+      "marginNetAmountBuy": { "type": "string", "desc": "融資買入應收付金額" },
+      "marginNetAmountSell": { "type": "string", "desc": "融資賣出應收付金額" },
+      "interest": { "type": "string", "desc": "融資利息" },
+      "fee": { "type": "string", "desc": "手續費" },
+      "tax": { "type": "string", "desc": "交易稅" },
+      "netAmount": { "type": "string", "desc": "淨收付金額" }
+    }
+  },
+  "settleDebitSum": {
+    "type": "object",
+    "desc": "融券結算摘要",
+    "properties": {
+      "shortQuantity": { "type": "string", "desc": "當日融券額度" },
+      "shortQuantityLeft": { "type": "string", "desc": "當日可用融資餘額" },
+      "guaranteeAmount": { "type": "string", "desc": "融券保證金" },
+      "guaranteeAmountBuy": { "type": "string", "desc": "融券保證金券買" },
+      "guaranteeAmountSell": { "type": "string", "desc": "融券保證金券賣" },
+      "shortCollateral": { "type": "string", "desc": "融券擔保品" },
+      "shortCollateralBuy": { "type": "string", "desc": "融券擔保品券買" },
+      "shortCollateralSell": { "type": "string", "desc": "融券擔保品券賣" },
+      "shortNetAmountBuy": { "type": "string", "desc": "融券券買應收付金額" },
+      "shortNetAmountSell": { "type": "string", "desc": "融券券賣應收付金額" },
+      "shortSellingFee": { "type": "string", "desc": "融券手續費" },
+      "interest": { "type": "string", "desc": "融券利息" },
+      "netAmount": { "type": "string", "desc": "融券淨收付金額" }
+    }
+  }
+}

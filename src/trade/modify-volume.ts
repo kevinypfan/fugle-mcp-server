@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
+import modifyQuantityReference from "./references/modify-quantity.json";
 
 /**
  * 註冊修改委託單數量相關的工具到 MCP Server
@@ -44,106 +45,45 @@ export function registerModifyVolumeTools(
             content: [
               {
                 type: "text",
-                text: `❌ 修改委託單數量失敗：找不到委託書號 ${orderNo} 的委託單`,
+                text: `修改委託單數量失敗：找不到委託書號 ${orderNo} 的委託單`,
               },
             ],
+            isError: true,
           };
         }
-        
+
+        // 檢查委託單狀態
         if (!targetOrder.canCancel) {
           return {
             content: [
               {
                 type: "text",
-                text: `❌ 修改委託單數量失敗：委託書號 ${orderNo} 的委託單不可修改`,
+                text: `修改委託單數量失敗：委託單不可修改`,
               },
             ],
+            isError: true,
           };
         }
 
-        // 計算修改後剩餘數量
-        const remainingQty = targetOrder.orgQty - targetOrder.filledQty - targetOrder.celQty;
-        
-        // 檢查刪減數量是否合理
-        if (volume > remainingQty) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: `❌ 修改委託單數量失敗：欲刪減股數 ${volume} 大於可刪減股數 ${remainingQty}`,
-              },
-            ],
-          };
-        }
-        
-        // 判斷是刪單還是減量
-        const isCancel = volume === 0 || volume === remainingQty;
-        
-        // 調用 SDK 修改數量
-        const result = await sdk.stock.modifyVolume(
-          accounts[0],
-          targetOrder,
-          volume
-        );
+        // 修改委託數量
+        const data = await sdk.stock.modifyVolume(accounts[0], targetOrder, volume);
 
-        // 格式化輸出訊息
-        const symbolName = targetOrder.symbol;
-        const buySell = targetOrder.buySell === "Buy" ? "買入" : "賣出";
-        const price = targetOrder.orderPrice.toFixed(2);
-        const originalQty = targetOrder.orgQty.toLocaleString('zh-TW');
-        const newQty = (remainingQty - volume).toLocaleString('zh-TW');
+        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(modifyQuantityReference, null, 2)}\n\`\`\``;
 
         return {
-          content: [
-            {
-              type: "text",
-              text: isCancel 
-                ? `✅ 委託單取消成功：
-委託書號：${orderNo}
-股票代號：${symbolName}
-交易方向：${buySell}
-委託價格：${price} 元
-委託數量：${originalQty} 股
-取消時間：${formatOrderTime(result.orderTime)}`
-                : `✅ 委託單數量修改成功：
-委託書號：${orderNo}
-股票代號：${symbolName}
-交易方向：${buySell}
-委託價格：${price} 元
-原委託數量：${originalQty} 股
-刪減數量：${volume.toLocaleString('zh-TW')} 股
-修改後數量：${newQty} 股
-修改時間：${formatOrderTime(result.orderTime)}`,
-            },
-          ],
+          content: [{ type: "text", text: response }],
         };
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
         return {
           content: [
             {
               type: "text",
-              text: `❌ 修改委託單數量失敗：${errorMessage}`,
+              text: `修改委託單數量時發生錯誤: ${error || "未知錯誤"}`,
             },
           ],
+          isError: true,
         };
       }
     }
   );
-}
-
-/**
- * 格式化委託時間（從毫秒格式轉為可讀格式）
- * @param timeStr 委託時間字串
- * @returns 格式化後的時間字串
- */
-function formatOrderTime(timeStr: string): string {
-  if (!timeStr || timeStr.length < 9) return timeStr;
-  
-  // 假設格式為 HHMMSSXXX，取出時分秒部分
-  const hour = timeStr.substring(0, 2);
-  const minute = timeStr.substring(2, 4);
-  const second = timeStr.substring(4, 6);
-  
-  return `${hour}:${minute}:${second}`;
 }

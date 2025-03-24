@@ -1,6 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
+import accountTotalPnlReference from "./references/account-total-pnl.json";
 
 /**
  * 註冊帳戶損益相關的工具到 MCP Server
@@ -23,50 +24,12 @@ export function registerTotalPnlTools(
     async () => {
       try {
         // 透過SDK獲取帳戶損益資訊
-        const pnlData = await sdk.accounting.accountTotalPnl(account);
+        const data = await sdk.accounting.accountTotalPnl(account);
 
-        // 格式化損益為貨幣格式
-        const formatCurrency = (value?: string) => {
-          const numValue = parseInt(value || "0");
-          return numValue.toLocaleString("zh-TW");
-        };
-        // 格式化回應內容
-        let responseText = `
-【帳戶損益總覽】
-
-未實現損益：
-- 現股：${formatCurrency(pnlData.unrealizedProfitLossCash)} 元
-- 融資：${formatCurrency(pnlData.unrealizedProfitLossMargin)} 元
-- 融券：${formatCurrency(pnlData.unrealizedProfitLossShortSelling)} 元
-- 未實現總計：${formatCurrency(pnlData.unrealizedProfitLossTotal)} 元
-
-已實現損益：
-- 現股：${formatCurrency(pnlData.realizedProfitLossCash)} 元
-- 融資：${formatCurrency(pnlData.realizedProfitLossMargin)} 元
-- 融券：${formatCurrency(pnlData.realizedProfitLossShortSelling)} 元
-- 已實現總計：${formatCurrency(pnlData.realizedProfitLossTotal)} 元
-
-當沖損益：
-- 信用：${formatCurrency(pnlData.dayTradingProfitLossCredit)} 元
-- 現股：${formatCurrency(pnlData.dayTradingProfitLossCash)} 元
-
-總計損益：
-- 現股總損益：${formatCurrency(pnlData.totalProfitLossCash)} 元
-- 融資總損益：${formatCurrency(pnlData.totalProfitLossMargin)} 元
-- 融券總損益：${formatCurrency(pnlData.totalProfitLossShortSelling)} 元
-- 總損益：${formatCurrency(pnlData.totalProfitLoss)} 元
-
-其他資訊：
-- 淨收付金額：${formatCurrency(pnlData.netAmount)} 元
-${
-  pnlData.accountMaintenanceRate
-    ? `- 整戶維持率：${pnlData.accountMaintenanceRate}%`
-    : ""
-}
-        `;
+        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(accountTotalPnlReference, null, 2)}\n\`\`\``;
 
         return {
-          content: [{ type: "text", text: responseText }],
+          content: [{ type: "text", text: response }],
         };
       } catch (error) {
         return {

@@ -19,7 +19,7 @@ import {
   registerMoversTools,
   registerQuotesTools,
 } from "./marketdata/snapshot";
-import { registerHistoricalCandlesTools } from "./marketdata/historical";
+import { registerHistoricalCandlesTools, registerHistoricalStatsTools } from "./marketdata/historical";
 import {
   registerAccountStatementTools,
   registerBankBalanceTools,
@@ -136,6 +136,7 @@ class FugleMcpServer {
 
   registerHistoricalTools() {
     registerHistoricalCandlesTools(this.server, this.stock);
+    registerHistoricalStatsTools(this.server, this.stock);
   }
 
   registerIntradayTools() {

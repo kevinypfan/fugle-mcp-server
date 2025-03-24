@@ -1,0 +1,10 @@
+{
+  "availableBalance": { "type": "number", "desc": "可用餘額" },
+  "reservedAmount": { "type": "number", "desc": "圈存金額" },
+  "dedicatedAccountBalance": { "type": "number", "desc": "專戶餘額" },
+  "withdrawalBankCode": { "type": "string", "desc": "出金銀行代號" },
+  "withdrawalBank": { "type": "string", "desc": "出金銀行名稱" },
+  "withdrawalAccount": { "type": "string", "desc": "出金銀行帳號" },
+  "depositBankCode": { "type": "string", "desc": "入金銀行代號" },
+  "depositAccount": { "type": "string", "desc": "入金銀行帳號" }
+}

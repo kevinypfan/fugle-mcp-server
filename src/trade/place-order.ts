@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
 import { BSAction, MarketType, PriceType, TimeInForce, OrderType } from "masterlink-sdk";
+import placeOrderReference from "./references/place-order.json";
 
 /**
  * 註冊下單相關的工具到 MCP Server
@@ -59,83 +60,32 @@ export function registerPlaceOrderTools(
           throw new Error("下單功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )");
         }
 
-        // 處理 enum 轉換 - 添加預設值確保不會有 undefined
-        let bsActionValue: BSAction;
-        let marketTypeValue: MarketType;
-        let priceTypeValue: PriceType;
-        let timeInForceValue: TimeInForce;
-        let orderTypeValue: OrderType;
-
-        // 直接映射並設置預設值
-        switch (buySell) {
-          case "Buy": bsActionValue = BSAction.Buy; break;
-          case "Sell": bsActionValue = BSAction.Sell; break;
-          default: throw new Error(`不支援的買賣別: ${buySell}`);
-        }
-
-        switch (marketType) {
-          case "Common": marketTypeValue = MarketType.Common; break;
-          case "Fixing": marketTypeValue = MarketType.Fixing; break;
-          case "IntradayOdd": marketTypeValue = MarketType.IntradayOdd; break;
-          case "Odd": marketTypeValue = MarketType.Odd; break;
-          case "Emg": marketTypeValue = MarketType.Emg; break;
-          default: throw new Error(`不支援的盤別: ${marketType}`);
-        }
-
-        switch (priceType) {
-          case "Limit": priceTypeValue = PriceType.Limit; break;
-          case "LimitUp": priceTypeValue = PriceType.LimitUp; break;
-          case "LimitDown": priceTypeValue = PriceType.LimitDown; break;
-          case "Market": priceTypeValue = PriceType.Market; break;
-          case "Reference": priceTypeValue = PriceType.Reference; break;
-          default: throw new Error(`不支援的價格旗標: ${priceType}`);
-        }
-
-        switch (timeInForce) {
-          case "ROD": timeInForceValue = TimeInForce.ROD; break;
-          case "FOK": timeInForceValue = TimeInForce.FOK; break;
-          case "IOC": timeInForceValue = TimeInForce.IOC; break;
-          default: throw new Error(`不支援的委託條件: ${timeInForce}`);
-        }
-
-        switch (orderType) {
-          case "Stock": orderTypeValue = OrderType.Stock; break;
-          case "Margin": orderTypeValue = OrderType.Margin; break;
-          case "Short": orderTypeValue = OrderType.Short; break;
-          case "DayTradeShort": orderTypeValue = OrderType.DayTradeShort; break;
-          default: throw new Error(`不支援的委託類別: ${orderType}`);
-        }
-
-        const order = {
-          buySell: bsActionValue,
+        // 建立委託單
+        const data = await sdk.stock.placeOrder(accounts[0], {
+          buySell: buySell as BSAction,
           symbol,
-          price,
+          price: price || "",
           quantity,
-          marketType: marketTypeValue,
-          priceType: priceTypeValue,
-          timeInForce: timeInForceValue,
-          orderType: orderTypeValue,
-        };
+          marketType: marketType as MarketType,
+          priceType: priceType as PriceType,
+          timeInForce: timeInForce as TimeInForce,
+          orderType: orderType as OrderType,
+        });
 
-        const result = await sdk.stock.placeOrder(accounts[0], order);
+        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(placeOrderReference, null, 2)}\n\`\`\``;
 
         return {
-          content: [
-            {
-              type: "text",
-              text: `✅ 下單成功：${buySell} ${symbol} 數量 ${quantity} 價格 ${price}（委託編號：${result.orderNo}）`,
-            },
-          ],
+          content: [{ type: "text", text: response }],
         };
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
         return {
           content: [
             {
               type: "text",
-              text: `❌ 下單失敗：${errorMessage}`,
+              text: `建立委託單時發生錯誤: ${error || "未知錯誤"}`,
             },
           ],
+          isError: true,
         };
       }
     }

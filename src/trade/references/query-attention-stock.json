@@ -1,0 +1,15 @@
+{
+  "marketType": { "type": "number", "desc": "市場別" },
+  "symbol": { "type": "string", "desc": "股票代號" },
+  "lowerLimitPrice": { "type": "number", "desc": "跌停價" },
+  "closingPrice": { "type": "number", "desc": "收盤價" },
+  "upperLimitPrice": { "type": "number", "desc": "漲停價" },
+  "alertStartDate": { "type": "string", "desc": "警示開始日期" },
+  "alertEndDate": { "type": "string", "desc": "警示結束日期" },
+  "alertHandlingMode": { "type": "number", "desc": "警示處理模式" },
+  "stockName": { "type": "string", "desc": "股票名稱" },
+  "messageDescription": { "type": "string", "desc": "訊息說明" },
+  "shortSellingAtFlatMark": { "type": "string", "desc": "平盤下可否券賣" },
+  "shortSellingAtFlatAllowed": { "type": "string", "desc": "平盤下可券賣狀態" },
+  "dayTradingAndAccount98Status": { "type": "string", "desc": "是否可當沖及禁98戶" }
+}
