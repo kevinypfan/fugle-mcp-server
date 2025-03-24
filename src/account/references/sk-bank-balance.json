@@ -1,0 +1,8 @@
+{
+  "balance": { "type": "number", "desc": "帳戶餘額" },
+  "availableBalance": { "type": "number", "desc": "可用餘額" },
+  "currency": { "type": "string", "desc": "幣別" },
+  "branchId": { "type": "string", "desc": "分公司" },
+  "custId": { "type": "string", "desc": "帳號" },
+  "bankAccount": { "type": "string", "desc": "銀行帳號" }
+}

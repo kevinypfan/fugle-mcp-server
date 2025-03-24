@@ -1,0 +1,4 @@
+{
+  "orderDate": { "type": "string", "desc": "委託日期" },
+  "orderTime": { "type": "string", "desc": "委託時間" }
+}

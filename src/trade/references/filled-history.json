@@ -1,0 +1,15 @@
+{
+  "orderNo": { "type": "string", "desc": "委託書號" },
+  "sysCode": { "type": "string", "desc": "來源別" },
+  "symbol": { "type": "string", "desc": "股票代號" },
+  "mktSeqNo": { "type": "string", "desc": "成交序號" },
+  "marketType": { "type": "enum", "desc": "市場類型: Common 整股、AfterMarket 盤後、Odd 盤後零股、Emg 興櫃、IntradayOdd 盤中零股" },
+  "market": { "type": "string", "desc": "市場: T 上市、O 上櫃、R 興櫃" },
+  "buySell": { "type": "enum", "desc": "買賣方向: Buy 買、Sell 賣" },
+  "orderType": { "type": "enum", "desc": "委託單類型: Stock 股票、Margin 融資、Short 融券、DayTradeShort 現股當沖賣" },
+  "payment": { "type": "number", "desc": "應收付總金額" },
+  "filledDate": { "type": "string", "desc": "成交日期" },
+  "filledTime": { "type": "string", "desc": "成交時間" },
+  "filledQty": { "type": "integer", "desc": "成交股數" },
+  "filledPrice": { "type": "number", "desc": "成交價格" }
+}

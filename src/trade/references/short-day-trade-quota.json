@@ -1,0 +1,5 @@
+{
+  "quota": { "type": "string", "desc": "現沖券剩餘張數" },
+  "total": { "type": "string", "desc": "現冲券原始額度" },
+  "used": { "type": "string", "desc": "現冲券使用額度" }
+}

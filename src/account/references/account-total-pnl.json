@@ -1,0 +1,18 @@
+{
+  "unrealizedProfitLossCash": { "type": "string", "desc": "未實現損益（現股）" },
+  "unrealizedProfitLossMargin": { "type": "string", "desc": "未實現損益（融資）" },
+  "unrealizedProfitLossShortSelling": { "type": "string", "desc": "未實現損益（融券）" },
+  "unrealizedProfitLossTotal": { "type": "string", "desc": "未實現損益總計" },
+  "realizedProfitLossCash": { "type": "string", "desc": "已實現損益（現股）" },
+  "realizedProfitLossMargin": { "type": "string", "desc": "已實現損益（融資）" },
+  "realizedProfitLossShortSelling": { "type": "string", "desc": "已實現損益（融券）" },
+  "realizedProfitLossTotal": { "type": "string", "desc": "已實現損益總計" },
+  "dayTradingProfitLossCredit": { "type": "string", "desc": "當沖損益（信用）" },
+  "dayTradingProfitLossCash": { "type": "string", "desc": "當沖損益（現股）" },
+  "netAmount": { "type": "string", "desc": "淨收付金額" },
+  "accountMaintenanceRate": { "type": "string", "desc": "整戶維持率" },
+  "totalProfitLossCash": { "type": "string", "desc": "總損益（現股）" },
+  "totalProfitLossMargin": { "type": "string", "desc": "總損益（融資）" },
+  "totalProfitLossShortSelling": { "type": "string", "desc": "總損益（融券）" },
+  "totalProfitLoss": { "type": "string", "desc": "總損益" }
+}
