@@ -27,11 +27,16 @@
     "masterlink-sdk": "file:masterlink-sdk-1.0.0.tgz"
   },
   "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.0",
     "@types/luxon": "^3.4.2",
     "@types/node": "^22.13.10",
+    "release-it": "^18.1.2",
     "typescript": "^5.8.2"
   },
   "bundledDependencies": [
+    "masterlink-sdk"
+  ],
+  "bundleDependencies": [
     "masterlink-sdk"
   ]
 }
