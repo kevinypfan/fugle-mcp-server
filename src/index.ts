@@ -156,7 +156,6 @@ class FugleMcpServer {
   async runServer() {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
-    console.error("Fugle MCP Server running on stdio");
   }
 }
 
