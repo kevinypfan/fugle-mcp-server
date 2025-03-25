@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.0.6](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.5...v0.0.6) (2025-03-25)
+
 ## [0.0.5](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.4...v0.0.5) (2025-03-25)
 
 
