@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.4...v0.0.5) (2025-03-25)
+
+
+### Features
+
+* add -v, --version option to check application version ([9d3f581](https://github.com/kevinypfan/fugle-mcp-server/commit/9d3f58199d845c819d801b1e99b48fddaf5764c3))
+
 ## [0.0.4](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.3...v0.0.4) (2025-03-24)
 
 
