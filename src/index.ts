@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import fs from "fs";
+import { Command } from "commander";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { MasterlinkSDK, Account } from "masterlink-sdk";
@@ -46,19 +47,31 @@ import {
   registerShortDaytradeQuotaTools,
 } from "./trade";
 
+import { version } from "../package.json";
+
+// 設置命令行選項
+const program = new Command();
+program
+  .version(version, "-v, --version")
+  .description("Fugle MCP Server");
+
+program.parse(process.argv);
+
+// 如果指定了版本參數，program.parse 會自動退出
+// 所以如果代碼執行到這裡，說明用戶沒有請求版本信息
+
+// 檢查環境變量
 const { NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
+const defaultCertPath = "/app/cert.p12";
+const certPath = process.env.CERT_PATH || defaultCertPath;
 
 if (!NOTIONAL_ID || !ACCOUNT_PASS || !CERT_PASS) {
-  console.error(
-    "All environment variables (NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS) are required"
-  );
-  process.exit(1);
+  console.error("All environment variables (NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS) are required");
+  process.exit(1); // Exit with error code
 }
 
-const CERT_PATH = process.env.CERT_PATH || "/app/cert.p12";
-
-if (!fs.existsSync(CERT_PATH)) {
-  console.error(`Error: Certificate file not found at ${CERT_PATH}`);
+if (!fs.existsSync(certPath)) {
+  console.error(`Error: Certificate file not found at ${certPath}`);
   process.exit(1); // Exit with error code
 }
 
@@ -72,7 +85,7 @@ class FugleMcpServer {
   constructor() {
     this.server = new McpServer({
       name: "fugle-mcp-server",
-      version: "1.0.0",
+      version: version,
     });
 
     this.sdk = new MasterlinkSDK(null);
@@ -80,7 +93,7 @@ class FugleMcpServer {
     this.accounts = this.sdk.login(
       NOTIONAL_ID as string,
       ACCOUNT_PASS as string,
-      CERT_PATH as string,
+      certPath,
       CERT_PASS as string
     );
 
@@ -161,11 +174,14 @@ class FugleMcpServer {
 }
 
 function main() {
-  const fugleMcpServer = new FugleMcpServer();
-  fugleMcpServer.runServer().catch((error) => {
-    console.error("Fatal error in main():", error);
-    process.exit(1);
-  });
+  // 如果沒有其他命令，繼續運行服務器
+  if (!process.argv.slice(2).length) {
+    const fugleMcpServer = new FugleMcpServer();
+    fugleMcpServer.runServer().catch((error) => {
+      console.error("Fatal error in main():", error);
+      process.exit(1);
+    });
+  }
 }
 
 main();
