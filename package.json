@@ -37,8 +37,5 @@
   },
   "bundledDependencies": [
     "masterlink-sdk"
-  ],
-  "bundleDependencies": [
-    "masterlink-sdk"
   ]
 }
