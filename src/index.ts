@@ -61,14 +61,25 @@ program.parse(process.argv);
 // 所以如果代碼執行到這裡，說明用戶沒有請求版本信息
 
 // 檢查環境變量
-const { NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
-const defaultCertPath = "/app/cert.p12";
-const certPath = process.env.CERT_PATH || defaultCertPath;
+const { NATIONAL_ID, NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
 
-if (!NOTIONAL_ID || !ACCOUNT_PASS || !CERT_PASS) {
-  console.error("All environment variables (NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS) are required");
+// 處理身分證號，優先使用 NATIONAL_ID
+const nationalId = NATIONAL_ID || NOTIONAL_ID;
+
+// 如果用戶使用的是 NOTIONAL_ID，顯示棄用警告
+if (!NATIONAL_ID && NOTIONAL_ID) {
+  console.warn("\x1b[33m%s\x1b[0m", `Warning: NOTIONAL_ID is deprecated and will be removed in version 0.1.0.`);
+  console.warn("\x1b[33m%s\x1b[0m", `Please use NATIONAL_ID instead.`);
+}
+
+if (!nationalId || !ACCOUNT_PASS || !CERT_PASS) {
+  console.error("Required environment variables are missing.");
+  console.error("Please provide either NATIONAL_ID or NOTIONAL_ID (deprecated), ACCOUNT_PASS, and CERT_PASS");
   process.exit(1); // Exit with error code
 }
+
+const defaultCertPath = "/app/cert.p12";
+const certPath = process.env.CERT_PATH || defaultCertPath;
 
 if (!fs.existsSync(certPath)) {
   console.error(`Error: Certificate file not found at ${certPath}`);
@@ -90,8 +101,9 @@ class FugleMcpServer {
 
     this.sdk = new MasterlinkSDK(null);
 
+    // 由於前面已經檢查過 nationalId 是否存在，這裡可以斷言它一定是字符串
     this.accounts = this.sdk.login(
-      NOTIONAL_ID as string,
+      nationalId as string,
       ACCOUNT_PASS as string,
       certPath,
       CERT_PASS as string

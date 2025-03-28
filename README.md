@@ -36,11 +36,16 @@ docker pull kevinypfan/fugle-mcp-server
 
 服務器需要以下環境變量：
 
-- `NOTIONAL_ID`: 身分證字號
+- `NATIONAL_ID`: 身分證字號
+- `NOTIONAL_ID`: 身分證字號（已棄用，請改用 NATIONAL_ID）
 - `ACCOUNT_PASS`: 帳戶密碼
 - `CERT_PASS`: 憑證密碼
 - `CERT_PATH`: 憑證位置（僅 NPM 方式需要）
 - `ENABLE_ORDER`: 是否開啟下單功能（可選，預設為 false）
+
+> **重要通知**: 
+> - 從版本 0.0.7 開始，我們將 `NOTIONAL_ID` 更名為 `NATIONAL_ID`。為了保持向後兼容性，兩個環境變量目前都可以使用，但建議使用 `NATIONAL_ID`。
+> - **棄用計劃**: `NOTIONAL_ID` 將在版本 0.1.0 中被完全移除。請在此之前遷移到 `NATIONAL_ID`。
 
 ### Docker 配置
 
@@ -57,7 +62,7 @@ docker pull kevinypfan/fugle-mcp-server
         "-i",
         "--rm",
         "-e",
-        "NOTIONAL_ID",
+        "NATIONAL_ID",
         "-e",
         "ACCOUNT_PASS",
         "-e",
@@ -68,7 +73,7 @@ docker pull kevinypfan/fugle-mcp-server
         "kevinypfan/fugle-mcp-server"
       ],
       "env": {
-        "NOTIONAL_ID": "<身分證字號>",
+        "NATIONAL_ID": "<身分證字號>",
         "ACCOUNT_PASS": "<帳戶密碼>",
         "CERT_PASS": "<憑證密碼>",
         "ENABLE_ORDER": "<開啟下單功能 ex: true or false>"
@@ -92,7 +97,7 @@ docker pull kevinypfan/fugle-mcp-server
         "fugle-mcp-server"
       ],
       "env": {
-        "NOTIONAL_ID": "<身分證字號>",
+        "NATIONAL_ID": "<身分證字號>",
         "ACCOUNT_PASS": "<帳戶密碼>",
         "CERT_PASS": "<憑證密碼>",
         "CERT_PATH": "<憑證位置>",
@@ -106,15 +111,3 @@ docker pull kevinypfan/fugle-mcp-server
 ## 命令行選項
 
 - `-v, --version`: 顯示版本號
-
-## 版本
-
-當前版本：0.0.5
-
-## 貢獻
-
-歡迎提交 Issue 和 Pull Request。
-
-## 授權
-
-MIT License
