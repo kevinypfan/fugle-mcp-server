@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 import fs from "fs";
-import { Command } from "commander";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { MasterlinkSDK, Account } from "masterlink-sdk";
@@ -48,17 +47,6 @@ import {
 } from "./trade";
 
 import { version } from "../package.json";
-
-// 設置命令行選項
-const program = new Command();
-program
-  .version(version, "-v, --version")
-  .description("Fugle MCP Server");
-
-program.parse(process.argv);
-
-// 如果指定了版本參數，program.parse 會自動退出
-// 所以如果代碼執行到這裡，說明用戶沒有請求版本信息
 
 // 檢查環境變量
 const { NATIONAL_ID, NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
@@ -186,14 +174,11 @@ class FugleMcpServer {
 }
 
 function main() {
-  // 如果沒有其他命令，繼續運行服務器
-  if (!process.argv.slice(2).length) {
-    const fugleMcpServer = new FugleMcpServer();
-    fugleMcpServer.runServer().catch((error) => {
-      console.error("Fatal error in main():", error);
-      process.exit(1);
-    });
-  }
+  const fugleMcpServer = new FugleMcpServer();
+  fugleMcpServer.runServer().catch((error) => {
+    console.error("Fatal error in main():", error);
+    process.exit(1);
+  });
 }
 
 main();

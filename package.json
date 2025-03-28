@@ -24,7 +24,6 @@
   "license": "ISC",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.7.0",
-    "commander": "^13.1.0",
     "luxon": "^3.5.0",
     "masterlink-sdk": "file:masterlink-sdk-1.0.0.tgz"
   },
