@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.6...v0.0.7) (2025-03-28)
+
+
+### Bug Fixes
+
+* resolve typo env ([34b607e](https://github.com/kevinypfan/fugle-mcp-server/commit/34b607e19eb841b6532f338fde2063c1bae96bb1))
+
 ## [0.0.6](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.5...v0.0.6) (2025-03-25)
 
 ## [0.0.5](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.4...v0.0.5) (2025-03-25)
