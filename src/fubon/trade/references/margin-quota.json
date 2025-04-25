@@ -1,0 +1,16 @@
+{
+  "isSuccess": "是否成功取得資訊",
+  "data": {
+    "quotaItems": [
+      {
+        "symbol": "股票代號",
+        "name": "股票名稱",
+        "marketType": "市場類型",
+        "marginQuota": "融資額度",
+        "shortQuota": "融券額度",
+        "marginDaytrade": "融資現股當沖額度",
+        "shortDaytrade": "融券現股當沖額度"
+      }
+    ]
+  }
+}

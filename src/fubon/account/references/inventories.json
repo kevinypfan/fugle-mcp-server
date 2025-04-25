@@ -1,0 +1,31 @@
+{
+  "date": { "type": "string", "desc": "交易日期" },
+  "account": { "type": "string", "desc": "帳號" },
+  "branchNo": { "type": "string", "desc": "分公司代號" },
+  "stockNo": { "type": "string", "desc": "股票代號" },
+  "orderType": { "type": "number", "desc": "委託單類型" },
+  "lastdayQty": { "type": "number", "desc": "昨日庫存餘額" },
+  "buyQty": { "type": "number", "desc": "今日委買股數" },
+  "buyFilledQty": { "type": "number", "desc": "今日買進成交股數" },
+  "buyValue": { "type": "number", "desc": "買進價金" },
+  "todayQty": { "type": "number", "desc": "今日庫存餘額" },
+  "tradableQty": { "type": "number", "desc": "可委託股數" },
+  "sellQty": { "type": "number", "desc": "今日委賣股數" },
+  "sellFilledQty": { "type": "number", "desc": "今日賣出成交股數" },
+  "sellValue": { "type": "number", "desc": "賣出價金" },
+  "odd": {
+    "type": "object",
+    "desc": "零股資訊",
+    "properties": {
+      "lastdayQty": { "type": "number", "desc": "昨日庫存餘額" },
+      "buyQty": { "type": "number", "desc": "今日委買股數" },
+      "buyFilledQty": { "type": "number", "desc": "今日買進成交股數" },
+      "buyValue": { "type": "number", "desc": "買進價金" },
+      "todayQty": { "type": "number", "desc": "今日庫存餘額" },
+      "tradableQty": { "type": "number", "desc": "可委託股數" },
+      "sellQty": { "type": "number", "desc": "今日委賣股數" },
+      "sellFilledQty": { "type": "number", "desc": "今日賣出成交股數" },
+      "sellValue": { "type": "number", "desc": "賣出價金" }
+    }
+  }
+}

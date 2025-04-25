@@ -26,7 +26,8 @@
     "@modelcontextprotocol/sdk": "^1.10.2",
     "fubon-neo": "file:fubon-neo-2.2.2.tgz",
     "luxon": "^3.5.0",
-    "masterlink-sdk": "file:masterlink-sdk-1.0.0.tgz"
+    "masterlink-sdk": "file:masterlink-sdk-1.0.0.tgz",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.0",

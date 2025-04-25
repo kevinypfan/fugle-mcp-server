@@ -1,0 +1,38 @@
+{
+  "date": { "type": "string", "desc": "查詢日" },
+  "branchNo": { "type": "string", "desc": "分公司代號" },
+  "account": { "type": "string", "desc": "帳號" },
+  "maintenanceSummary": {
+    "type": "object",
+    "desc": "維持率彙總資訊",
+    "properties": {
+      "marginValue": { "type": "number", "desc": "整戶融資市值" },
+      "shortsellValue": { "type": "number", "desc": "整戶融券市值" },
+      "shortsellMargin": { "type": "number", "desc": "整戶融券保證金額" },
+      "collateral": { "type": "number", "desc": "擔保品" },
+      "marginLoanAmt": { "type": "number", "desc": "整戶融資金額" },
+      "maintenanceRatio": { "type": "number", "desc": "整戶維持率" }
+    }
+  },
+  "maintenanceDetail": {
+    "type": "array",
+    "desc": "維持率明細資訊",
+    "items": {
+      "type": "object",
+      "properties": {
+        "stockNo": { "type": "string", "desc": "股票代碼" },
+        "orderNo": { "type": "string", "desc": "委託書號" },
+        "orderType": { "type": "number", "desc": "委託類別" },
+        "quantity": { "type": "number", "desc": "持有股數" },
+        "price": { "type": "number", "desc": "計算價" },
+        "costPrice": { "type": "number", "desc": "成本價" },
+        "marketValue": { "type": "number", "desc": "市值" },
+        "shortsellMargin": { "type": "number", "desc": "融券保證金" },
+        "collateral": { "type": "number", "desc": "擔保品" },
+        "marginLoanAmt": { "type": "number", "desc": "融資金" },
+        "maintenanceRatio": { "type": "number", "desc": "維持率" },
+        "marginOrShortRatio": { "type": "string", "desc": "資/券成數" }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "account": {
+    "type": "object",
+    "desc": "帳戶資訊",
+    "properties": {
+      "branchNo": { "type": "string", "desc": "分公司代號" },
+      "account": { "type": "string", "desc": "帳號" }
+    }
+  },
+  "details": {
+    "type": "array",
+    "desc": "交割款明細",
+    "items": {
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "desc": "查詢日" },
+        "settlementDate": { "type": "string", "desc": "交割日" },
+        "cashIn": { "type": "number", "desc": "交割收入" },
+        "cashOut": { "type": "number", "desc": "交割支出" }
+      }
+    }
+  }
+}

@@ -2,15 +2,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { RestStockClient } from "fubon-neo/marketdata/rest/stock/client";
 import { Account } from "fubon-neo/trade";
-import { registerBankBalanceTool } from "./account/bank-remain";
-
-export const registerAccountTools = (
-  server: McpServer,
-  sdk: FubonSDK,
-  account: Account
-) => {
-  registerBankBalanceTool(server, sdk, account);
-};
+import { registerAccountManagementTools } from "./account";
+import { registerTradeTools } from "./trade";
 
 export class FubonMcp {
   server: McpServer;
@@ -57,6 +50,7 @@ export class FubonMcp {
     }
     this.stock = this.sdk.marketdata.restClient.stock;
 
-    registerAccountTools(this.server, this.sdk, this.targetAccount);
+    registerAccountManagementTools(this.server, this.sdk, this.targetAccount);
+    registerTradeTools(this.server, this.sdk, this.targetAccount);
   }
 }
