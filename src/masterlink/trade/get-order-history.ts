@@ -7,12 +7,12 @@ import orderHistoryReference from "./references/order-history.json";
  * 註冊查詢歷史委託相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerOrderHistoryTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 查詢歷史委託工具
   server.tool(
@@ -33,7 +33,7 @@ export function registerOrderHistoryTools(
     async ({ startDate, endDate, symbol }, extra) => {
       try {
         // 呼叫 SDK 獲取歷史委託記錄
-        const data = await sdk.stock.orderHistory(accounts[0], startDate, endDate);
+        const data = await sdk.stock.orderHistory(account, startDate, endDate);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(orderHistoryReference, null, 2)}\n\`\`\``;
 

@@ -7,12 +7,12 @@ import attentionStockReference from "./references/query-attention-stock.json";
  * 註冊查詢警示股票相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerAttentionStockTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 查詢警示股票工具
   server.tool(
@@ -27,7 +27,7 @@ export function registerAttentionStockTools(
     async ({ symbol }, extra) => {
       try {
         // 呼叫 SDK 獲取警示股票資訊
-        const data = await sdk.stock.queryAttentionStock(accounts[0], symbol);
+        const data = await sdk.stock.queryAttentionStock(account, symbol);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(attentionStockReference, null, 2)}\n\`\`\``;
 

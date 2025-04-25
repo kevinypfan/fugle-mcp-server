@@ -7,12 +7,12 @@ import modifyQuantityReference from "./references/modify-quantity.json";
  * 註冊修改委託單數量相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerModifyVolumeTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 修改委託單數量工具
   server.tool(
@@ -37,7 +37,7 @@ export function registerModifyVolumeTools(
           throw new Error("修改委託單數量功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )");
         }
         // 先獲取委託單資訊
-        const orderResults = await sdk.stock.getOrderResults(accounts[0]);
+        const orderResults = await sdk.stock.getOrderResults(account);
         const targetOrder = orderResults.find(order => order.orderNo === orderNo);
         
         if (!targetOrder) {
@@ -66,7 +66,7 @@ export function registerModifyVolumeTools(
         }
 
         // 修改委託數量
-        const data = await sdk.stock.modifyVolume(accounts[0], targetOrder, volume);
+        const data = await sdk.stock.modifyVolume(account, targetOrder, volume);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(modifyQuantityReference, null, 2)}\n\`\`\``;
 

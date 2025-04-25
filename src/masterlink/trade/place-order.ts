@@ -8,12 +8,12 @@ import placeOrderReference from "./references/place-order.json";
  * 註冊下單相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerPlaceOrderTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 建立委託單工具
   server.tool(
@@ -61,7 +61,7 @@ export function registerPlaceOrderTools(
         }
 
         // 建立委託單
-        const data = await sdk.stock.placeOrder(accounts[0], {
+        const data = await sdk.stock.placeOrder(account, {
           buySell: buySell as BSAction,
           symbol,
           price: price || "",

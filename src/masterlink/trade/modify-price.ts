@@ -8,12 +8,12 @@ import modifyPriceReference from "./references/modify-price.json";
  * 註冊修改委託單相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerModifyOrderTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 修改委託價格工具
   server.tool(
@@ -41,7 +41,7 @@ export function registerModifyOrderTools(
         }
         
         // 先獲取委託單資訊
-        const orderResults = await sdk.stock.getOrderResults(accounts[0]);
+        const orderResults = await sdk.stock.getOrderResults(account);
         const targetOrder = orderResults.find(order => order.orderNo === orderNo);
         
         if (!targetOrder) {
@@ -71,7 +71,7 @@ export function registerModifyOrderTools(
 
         // 修改委託價格
         const data = await sdk.stock.modifyPrice(
-          accounts[0],
+          account,
           targetOrder,
           price || "",
           priceType as PriceType

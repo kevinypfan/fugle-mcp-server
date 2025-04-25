@@ -7,12 +7,12 @@ import filledDetailReference from "./references/get-filled-detail.json";
  * 註冊查詢成交明細相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerFilledDetailTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 查詢今日成交明細工具
   server.tool(
@@ -27,7 +27,7 @@ export function registerFilledDetailTools(
     async ({ symbol }, extra) => {
       try {
         // 呼叫 SDK 獲取成交明細
-        const data = await sdk.stock.getFilledDetail(accounts[0], symbol);
+        const data = await sdk.stock.getFilledDetail(account, symbol);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(filledDetailReference, null, 2)}\n\`\`\``;
 

@@ -8,12 +8,12 @@ import orderResultsReference from "./references/get-order-results.json";
  * 註冊查詢委託單相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerOrderResultTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 取得委託單結果工具
   server.tool(
@@ -59,7 +59,7 @@ export function registerOrderResultTools(
         }
 
         // 呼叫 SDK 獲取委託單結果
-        const data = await sdk.stock.getOrderResults(accounts[0], queryTypeValue);
+        const data = await sdk.stock.getOrderResults(account, queryTypeValue);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(orderResultsReference, null, 2)}\n\`\`\``;
 

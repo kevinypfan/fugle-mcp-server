@@ -7,12 +7,12 @@ import filledHistoryDetailReference from "./references/filled-history-detail.jso
  * 註冊查詢歷史成交明細相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerFilledHistoryDetailTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 查詢歷史成交明細工具
   server.tool(
@@ -29,7 +29,7 @@ export function registerFilledHistoryDetailTools(
     async ({ startDate, endDate }, extra) => {
       try {
         // 呼叫 SDK 獲取歷史成交明細資訊
-        const data = await sdk.stock.filledDetailHistory(accounts[0], startDate, endDate);
+        const data = await sdk.stock.filledDetailHistory(account, startDate, endDate);
 
         // 檢查是否有查詢結果
         if (!data || (Array.isArray(data) && data.length === 0)) {

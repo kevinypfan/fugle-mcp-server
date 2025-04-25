@@ -7,12 +7,12 @@ import shortDaytradeQuotaReference from "./references/short-day-trade-quota.json
  * 註冊查詢現沖券餘額相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerShortDaytradeQuotaTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 查詢現沖券餘額工具
   server.tool(
@@ -26,7 +26,7 @@ export function registerShortDaytradeQuotaTools(
     async ({ symbol }, extra) => {
       try {
         // 呼叫 SDK 獲取現沖券餘額資訊
-        const data = await sdk.stock.shortDaytradeQuota(accounts[0], symbol);
+        const data = await sdk.stock.shortDaytradeQuota(account, symbol);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(shortDaytradeQuotaReference, null, 2)}\n\`\`\``;
 

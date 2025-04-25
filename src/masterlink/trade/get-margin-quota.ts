@@ -7,12 +7,12 @@ import marginQuotaReference from "./references/margin-quota.json";
  * 註冊查詢資券配額相關的工具到 MCP Server
  * @param {Object} server MCP Server 實例
  * @param {Object} sdk MasterlinkSDK 實例
- * @param {Object} accounts 帳戶實例陣列
+ * @param {Object} account 帳戶實例
  */
 export function registerMarginQuotaTools(
   server: McpServer,
   sdk: MasterlinkSDK,
-  accounts: Account[]
+  account: Account
 ) {
   // 查詢資券配額工具
   server.tool(
@@ -34,14 +34,14 @@ export function registerMarginQuotaTools(
         // 根據查詢類別獲取資料
         if (queryType === "all") {
           // 如果是全部，則分別查詢融資和融券
-          const marginData = await sdk.stock.marginQuota(accounts[0], symbol, "1");
-          const shortData = await sdk.stock.marginQuota(accounts[0], symbol, "2");
+          const marginData = await sdk.stock.marginQuota(account, symbol, "1");
+          const shortData = await sdk.stock.marginQuota(account, symbol, "2");
           
           if (marginData) resultData.push(marginData);
           if (shortData) resultData.push(shortData);
         } else {
           // 否則只查詢指定類別
-          const data = await sdk.stock.marginQuota(accounts[0], symbol, queryType);
+          const data = await sdk.stock.marginQuota(account, symbol, queryType);
           if (data) resultData.push(data);
         }
 
