@@ -6,6 +6,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { MasterlinkMcp } from "./masterlink";
 
 import { version } from "../package.json";
+import { FubonMcp } from "./fubon";
 
 // 檢查環境變量
 const { NATIONAL_ID, NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
@@ -47,7 +48,8 @@ class FugleMcpServer {
       version: version,
     });
 
-    new MasterlinkMcp(this.server, certPath);
+    // new MasterlinkMcp(this.server, certPath);
+    new FubonMcp(this.server, certPath);
   }
 
   async runServer() {
