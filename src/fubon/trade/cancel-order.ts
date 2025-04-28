@@ -19,27 +19,46 @@ export function registerCancelOrderTool(
     "cancel_order",
     "刪除委託單",
     {
-      orderNo: z.string().describe("委託書號"),
-      stockNo: z.string().describe("股票代號"),
-      marketType: z.enum(["Common", "Fixing", "IntradayOdd", "Odd", "Emg", "EmgOdd"])
-        .describe("盤別種類：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股, Emg = 興櫃, EmgOdd = 興櫃零股")
+      seqNo: z.string().describe("委託單流水序號")
     },
-    async ({ orderNo, stockNo, marketType }) => {
+    async ({ seqNo }) => {
       try {
+        if (process.env.ENABLE_ORDER !== "true") {
+          throw new Error(
+            "刪除委託單功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )"
+          );
+        }
+
+        // 先獲取委託單資訊
+        const orderResultRes = await sdk.stock.getOrderResults(account);
+        if (!orderResultRes.isSuccess) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `取得委託單資訊失敗：${orderResultRes.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        const targetOrder = orderResultRes.data?.find((order) => order.seqNo === seqNo);
+
+        if (!targetOrder) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `刪除委託單失敗：找不到委託單流水序號 ${seqNo} 的委託單`
+              },
+            ],
+            isError: true,
+          };
+        }
+
         // 透過SDK刪除委託單
-        // 注意：這裡根據 OrderResult 物件的類型定義補充了必要的欄位
-        const data = await sdk.stock.cancelOrder(account, {
-          orderNo,
-          stockNo,
-          marketType: marketType as MarketType, // 使用 type assertion
-          seqNo: "",  // 委託單流水序號
-          date: new Date().toLocaleDateString(),
-          branchNo: account.branchNo || "",
-          account: account.account || "",
-          isPreOrder: false,
-          lastTime: new Date().toLocaleTimeString(),
-          status: 10  // 假設狀態為委託成功
-        }, false);
+        const data = await sdk.stock.cancelOrder(account, targetOrder, false);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(cancelOrderReference, null, 2)}\n\`\`\``;
 

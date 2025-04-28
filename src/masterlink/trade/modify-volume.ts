@@ -22,7 +22,7 @@ export function registerModifyVolumeTools(
       orderNo: z.string().optional().describe("委託書號，例如：f0002"),
       preOrderNo: z.string().optional().describe("委託書號，例如：f0002"),
       isPreOrder: z.boolean().default(false).describe("是否為預約單"),
-      volume: z.number().int().min(0).describe("欲刪減的股數（設為0表示刪單）"),
+      volume: z.number().describe("欲刪減的股數（設為0表示刪單）"),
     },
     async ({ orderNo, preOrderNo, volume, isPreOrder }) => {
       try {

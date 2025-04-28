@@ -19,24 +19,49 @@ export function registerModifyQuantityTool(
     "modify_quantity",
     "修改委託單數量",
     {
-      orderNo: z.string().describe("委託書號"),
-      stockNo: z.string().describe("股票代號"),
-      marketType: z.enum(["Common", "Fixing", "IntradayOdd", "Odd", "Emg", "EmgOdd"])
-        .describe("盤別種類：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股, Emg = 興櫃, EmgOdd = 興櫃零股"),
-      quantity: z.number().describe("新委託數量")
+      seqNo: z.string().describe("委託單流水序號"),
+      quantity: z.number().describe("新委託數量（設為0表示刪單）")
     },
-    async ({ orderNo, stockNo, marketType, quantity }) => {
+    async ({ seqNo, quantity }) => {
       try {
+        if (process.env.ENABLE_ORDER !== "true") {
+          throw new Error(
+            "修改委託單數量功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )"
+          );
+        }
+
+        // 先獲取委託單資訊
+        const orderResultRes = await sdk.stock.getOrderResults(account);
+        if (!orderResultRes.isSuccess) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `取得委託單資訊失敗：${orderResultRes.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        const targetOrder = orderResultRes.data?.find((order) => order.seqNo === seqNo);
+
+        if (!targetOrder) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `修改委託單數量失敗：找不到委託單流水序號 ${seqNo} 的委託單`
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        const modifyQtyObj = sdk.stock.makeModifyQuantityObj(targetOrder, quantity);
+
         // 透過SDK修改委託單數量
-        const data = await sdk.stock.modifyQuantity(account, {
-          txse: "",  // 交易所代碼
-          date: new Date().toLocaleDateString(),
-          asty: "0",  // 資產類別
-          orderNo,
-          stockNo,
-          marketType: marketType as MarketType,  // 使用 type assertion
-          newQuantity: quantity  // SDK中使用 newQuantity 作為參數
-        }, false);
+        const data = await sdk.stock.modifyQuantity(account, modifyQtyObj, false);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(modifyQuantityReference, null, 2)}\n\`\`\``;
 

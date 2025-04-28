@@ -19,27 +19,68 @@ export function registerModifyPriceTool(
     "modify_price",
     "修改委託單價格",
     {
-      orderNo: z.string().describe("委託書號"),
-      stockNo: z.string().describe("股票代號"),
-      marketType: z.enum(["Common", "Fixing", "IntradayOdd", "Odd", "Emg", "EmgOdd"])
-        .describe("盤別種類：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股, Emg = 興櫃, EmgOdd = 興櫃零股"),
-      price: z.string().describe("新委託價格"),
+      seqNo: z.string().describe("委託單流水序號"),
+      price: z.string().optional().describe("新委託價格 (與 priceType 擇一填寫)"),
       priceType: z.enum(["Limit", "LimitUp", "LimitDown", "Market", "Reference"])
-        .describe("價格別：Limit = 限價, LimitUp = 漲停, LimitDown = 跌停, Market = 市價, Reference = 參考價")
+        .optional()
+        .describe("價格別：Limit = 限價, LimitUp = 漲停, LimitDown = 跌停, Market = 市價, Reference = 參考價 (與 price 擇一填寫)")
     },
-    async ({ orderNo, stockNo, marketType, price, priceType }) => {
+    async ({ seqNo, price, priceType }) => {
       try {
+        if (process.env.ENABLE_ORDER !== "true") {
+          throw new Error(
+            "修改委託價格功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )"
+          );
+        }
+
+        // 確認 price 與 priceType 至少有一個有值，且不能同時有值
+        if ((price && priceType) || (!price && !priceType)) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: "修改委託價格失敗：price 和 priceType 必須擇一填寫"
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        // 先獲取委託單資訊
+        const orderResultRes = await sdk.stock.getOrderResults(account);
+        if (!orderResultRes.isSuccess) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `取得委託單資訊失敗：${orderResultRes.message}`,
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        const targetOrder = orderResultRes.data?.find((order) => order.seqNo === seqNo);
+
+        if (!targetOrder) {
+          return {
+            content: [
+              {
+                type: "text",
+                text: `修改委託單價格失敗：找不到委託單流水序號 ${seqNo} 的委託單`
+              },
+            ],
+            isError: true,
+          };
+        }
+
+        // 使用 makeModifyPriceObj 建立修改價格物件
+        const modifyPriceObj = price 
+          ? sdk.stock.makeModifyPriceObj(targetOrder, price)
+          : sdk.stock.makeModifyPriceObj(targetOrder, null, priceType as PriceType);
+
         // 透過SDK修改委託單價格
-        // 根據 ModifyPrice 介面，應該不包含 marketType，且使用 newPrice 而非 price
-        const data = await sdk.stock.modifyPrice(account, {
-          txse: "",  // 交易所代碼
-          date: new Date().toLocaleDateString(),
-          asty: "0",  // 資產類別
-          orderNo,
-          stockNo,
-          newPrice: price,  // 使用 newPrice 而非 price
-          priceType: priceType as PriceType  // 使用 type assertion
-        }, false);
+        const data = await sdk.stock.modifyPrice(account, modifyPriceObj, false);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(modifyPriceReference, null, 2)}\n\`\`\``;
 
