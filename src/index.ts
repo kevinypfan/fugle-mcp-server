@@ -48,8 +48,8 @@ class FugleMcpServer {
       version: version,
     });
 
-    new MasterlinkMcp(this.server, certPath);
-    // new FubonMcp(this.server, certPath);
+    // new MasterlinkMcp(this.server, certPath);
+    new FubonMcp(this.server, certPath);
   }
 
   async runServer() {
