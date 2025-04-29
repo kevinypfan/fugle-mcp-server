@@ -7,6 +7,7 @@ import { registerImportantNewsTool } from "./tools/get-important-news";
 import { registerCompanyProfileTool } from "./tools/get-company-profile";
 import { registerMonthlyRevenueTool } from "./tools/get-monthly-revenue";
 import { registerAutocompleteTool } from "./tools/get-autocomplete-terms";
+import { registerLast10YearsDividendsTool } from "./tools/get-last-10-years-dividends";
 
 export const registerAllFundamentalTools = (
   server: McpServer,
@@ -19,4 +20,5 @@ export const registerAllFundamentalTools = (
   registerCompanyProfileTool(server, provider);
   registerMonthlyRevenueTool(server, provider);
   registerAutocompleteTool(server, provider);
+  registerLast10YearsDividendsTool(server, provider);
 };

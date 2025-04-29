@@ -54,6 +54,10 @@ export function registerModifyVolumeTools(
           };
         }
 
+        if (isPreOrder) {
+          targetOrder.orderDate = targetOrder?.workDate;
+        }
+
         // 檢查委託單狀態
         if (!targetOrder.canCancel) {
           return {
@@ -66,7 +70,6 @@ export function registerModifyVolumeTools(
             isError: true,
           };
         }
-
         // 修改委託數量
         const data = await sdk.stock.modifyVolume(account, targetOrder, volume);
 

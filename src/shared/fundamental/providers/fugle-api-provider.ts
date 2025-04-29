@@ -9,6 +9,7 @@ import {
   CompanyProfile,
   MonthlyRevenueItem,
   AutocompleteTerms,
+  DividendRecord,
 } from "../types.js";
 
 /**
@@ -143,8 +144,22 @@ class FugleApiProvider {
   }
 
   /**
-   * 獲取近5年營收 (FCNT000006)
+   * 最近10年股利(時報資料源) (FCNT000135)
    */
+  async getLast10YearsDividends(symbolId: string): Promise<DividendRecord[]> {
+    try {
+      const response = await this.apiClient.get<
+        FugleApiResponse<DividendRecord[]>
+      >(`/data/contents/FCNT000135`, {
+        params: { symbol_id: symbolId },
+      });
+      return response.data.data.content.rawContent;
+    } catch (error) {
+      console.error(`Error fetching monthly revenue for ${symbolId}:`, error);
+      throw error;
+    }
+  }
+
   async getAutocompleteTerms(terms: string): Promise<AutocompleteTerms> {
     try {
       const response = await this.apiClient.get<AutocompleteTerms>(

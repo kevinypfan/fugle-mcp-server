@@ -30,7 +30,7 @@ export {
   registerModifyOrderTools,
   registerModifyVolumeTools,
   registerOrderResultTools,
-  registerPlaceOrderTools
+  registerPlaceOrderTools,
 };
 
 // 定義一個函數來註冊所有交易工具
@@ -52,6 +52,4 @@ export const registerAllTradeTools = (
   registerModifyVolumeTools(server, sdk, account);
   registerOrderResultTools(server, sdk, account);
   registerPlaceOrderTools(server, sdk, account);
-  
-  console.log("所有交易相關工具已註冊到 MCP Server");
 };

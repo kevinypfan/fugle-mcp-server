@@ -35,5 +35,4 @@ export function registerTradeTools(
   registerMarginQuotaTool(server, sdk, account);
   registerDaytradeAndStockInfoTool(server, sdk, account);
 
-  console.log("所有交易相關工具已註冊到 MCP Server");
 }

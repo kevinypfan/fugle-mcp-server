@@ -20,7 +20,7 @@ export {
   registerAccountStatementTools,
   registerTodayTradeSummaryTools,
   registerTodaySettlementTools,
-  registerTotalPnlTools
+  registerTotalPnlTools,
 };
 
 // 定義一個函數來註冊所有帳戶管理工具
@@ -37,6 +37,4 @@ export const registerAllAccountTools = (
   registerTodayTradeSummaryTools(server, sdk, account);
   registerTodaySettlementTools(server, sdk, account);
   registerTotalPnlTools(server, sdk, account);
-  
-  console.log("所有帳戶管理相關工具已註冊到 MCP Server");
 };

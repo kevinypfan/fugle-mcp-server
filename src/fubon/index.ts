@@ -4,8 +4,8 @@ import { RestStockClient } from "fubon-neo/marketdata/rest/stock/client";
 import { Account } from "fubon-neo/trade";
 import { registerAccountManagementTools } from "./account";
 import { registerTradeTools } from "./trade";
-import { registerAllTools as registerAllMarketDataTools } from "./marketdata";
 import { SdkProvider } from "../shared/factory";
+import { registerAllMarketDataTools } from "../shared/marketdata";
 
 export class FubonMcp {
   server: McpServer;

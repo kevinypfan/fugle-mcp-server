@@ -12,6 +12,24 @@ export interface FugleApiResponse<T> {
   };
 }
 
+export interface DividendRecord {
+  divYy: number; // 配息年度
+  cshdiv: number; // 現金股利
+  stkdiv: number | null; // 股票股利
+  divPeriod?: string; // 配息期間 (如"Y"=全年，可能為空字串)
+  cshSource?: string; // 現金股利來源
+  stkSource?: string; // 股票股利來源
+  eps?: number; // 每股盈餘
+  payoutRatio?: number; // 配息率
+  cshdivDate?: string; // 股利基準日 (現金)
+  risuYmd?: string | null; // 股東會日期
+  divBasicDate?: string | null; // 除權息基準日
+  cshdivPayDate?: string | null; // 現金股利發放日
+  fillDivDays?: number; // 配息等待天數
+  divYield?: number; // 殖利率
+  source?: string; // 資料來源
+}
+
 // 近3日價量數據結構 (FCNT000013)
 export interface RecentPriceVolumeData {
   date: string;

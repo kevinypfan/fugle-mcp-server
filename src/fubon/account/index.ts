@@ -30,6 +30,4 @@ export function registerAccountManagementTools(
   registerRealizedPnLDetailTool(server, sdk, account);
   registerRealizedPnLSumTool(server, sdk, account);
   registerUnrealizedPnLDetailTool(server, sdk, account);
-
-  console.log("所有帳戶管理相關工具已註冊到 MCP Server");
 }

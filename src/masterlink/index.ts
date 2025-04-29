@@ -3,8 +3,8 @@ import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { RestStockClient } from "masterlink-sdk/marketdata/rest/stock/client";
 import { registerAllAccountTools } from "./account";
 import { registerAllTradeTools } from "./trade";
-import { registerAllMarketDataTools } from "./marketdata";
 import { SdkProvider } from "../shared/factory";
+import { registerAllMarketDataTools } from "../shared/marketdata";
 
 export class MasterlinkMcp {
   server: McpServer;

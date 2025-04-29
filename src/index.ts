@@ -61,13 +61,10 @@ class FugleMcpServer {
     const sdkType = this.sdkProvider.getSdkType();
     
     if (sdkType === 'masterlink') {
-      console.log('Using Masterlink SDK');
       new MasterlinkMcp(this.server, certPath);
     } else if (sdkType === 'fubon') {
-      console.log('Using Fubon SDK');
       new FubonMcp(this.server, certPath);
     } else {
-      console.error(`Unknown SDK type: ${sdkType}`);
       process.exit(1);
     }
     registerAllFundamentalTools(this.server, this.fugleProvider);
