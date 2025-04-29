@@ -4,6 +4,7 @@ import { RestStockClient } from "masterlink-sdk/marketdata/rest/stock/client";
 import { registerAllAccountTools } from "./account";
 import { registerAllTradeTools } from "./trade";
 import { registerAllMarketDataTools } from "./marketdata";
+import { SdkProvider } from "../shared/factory";
 
 export class MasterlinkMcp {
   server: McpServer;
@@ -47,9 +48,18 @@ export class MasterlinkMcp {
       console.error("Failed to initialize marketdata");
       process.exit(1);
     }
-    this.stock = this.sdk.marketdata.restClient.stock;
+    
+    // 使用 SDK Provider 創建具有正確類型的 stock 客戶端
+    const sdkProvider = SdkProvider.getInstance();
+    const originalStock = this.sdk.marketdata.restClient.stock;
+    
+    // 用工廠方法創建具有正確類型的客戶端
+    // 特別說明: typedStock 會同時具有 MasterlinkStockClient 和 GenericStockClient 的類型
+    // 這確保了它有所需的所有方法，且返回類型正確
+    const typedStock = sdkProvider.createStockClient(originalStock);
+    this.stock = typedStock;
 
-    registerAllMarketDataTools(this.server, this.stock);
+    registerAllMarketDataTools(this.server, typedStock);
     registerAllTradeTools(this.server, this.sdk, this.targetAccount);
     registerAllAccountTools(this.server, this.sdk, this.targetAccount);
   }

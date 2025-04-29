@@ -9,6 +9,8 @@ import { version } from "../package.json";
 import { FubonMcp } from "./fubon";
 import { FugleApiProvider } from "./shared/fundamental/providers";
 import { registerAllFundamentalTools } from "./shared/fundamental";
+import { config } from "./config";
+import { SdkProvider } from "./shared/factory";
 
 // 檢查環境變量
 const { NATIONAL_ID, NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
@@ -44,6 +46,7 @@ if (!fs.existsSync(certPath)) {
 class FugleMcpServer {
   private server: McpServer;
   private fugleProvider: FugleApiProvider;
+  private sdkProvider: SdkProvider;
 
   constructor() {
     this.server = new McpServer({
@@ -52,9 +55,21 @@ class FugleMcpServer {
     });
 
     this.fugleProvider = FugleApiProvider.getInstance();
-
-    new MasterlinkMcp(this.server, certPath);
-    // new FubonMcp(this.server, certPath);
+    this.sdkProvider = SdkProvider.getInstance();
+    
+    // 根據設定選擇要使用的 SDK
+    const sdkType = this.sdkProvider.getSdkType();
+    
+    if (sdkType === 'masterlink') {
+      console.log('Using Masterlink SDK');
+      new MasterlinkMcp(this.server, certPath);
+    } else if (sdkType === 'fubon') {
+      console.log('Using Fubon SDK');
+      new FubonMcp(this.server, certPath);
+    } else {
+      console.error(`Unknown SDK type: ${sdkType}`);
+      process.exit(1);
+    }
     registerAllFundamentalTools(this.server, this.fugleProvider);
   }
 

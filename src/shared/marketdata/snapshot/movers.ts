@@ -36,11 +36,10 @@ export function registerMoversTools(server: McpServer, stock: StockClientInterfa
       eq: z.number().optional().describe("篩選等於漲跌／漲跌幅的股票"),
       limit: z
         .number()
-        .int()
         .positive()
         .max(50)
         .optional()
-        .describe("限制回傳筆數，最多 50 筆"),
+        .describe("限制回傳筆數，預設 30 筆，最多 50 筆"),
     },
     async ({
       market,
@@ -52,7 +51,7 @@ export function registerMoversTools(server: McpServer, stock: StockClientInterfa
       lt,
       lte,
       eq,
-      limit = 20,
+      limit = 30,
     }) => {
       try {
         // 透過API獲取股票漲跌幅排行
@@ -68,6 +67,8 @@ export function registerMoversTools(server: McpServer, stock: StockClientInterfa
           eq,
         });
 
+        data.data = data.data.slice(0, limit);
+        
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(moversReference, null, 2)}\n\`\`\``;
 
         return {

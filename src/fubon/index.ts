@@ -5,6 +5,7 @@ import { Account } from "fubon-neo/trade";
 import { registerAccountManagementTools } from "./account";
 import { registerTradeTools } from "./trade";
 import { registerAllTools as registerAllMarketDataTools } from "./marketdata";
+import { SdkProvider } from "../shared/factory";
 
 export class FubonMcp {
   server: McpServer;
@@ -49,11 +50,20 @@ export class FubonMcp {
       console.error("Failed to initialize marketdata");
       process.exit(1);
     }
-    this.stock = this.sdk.marketdata.restClient.stock;
+    
+    // 使用 SDK Provider 創建具有正確類型的 stock 客戶端
+    const sdkProvider = SdkProvider.getInstance();
+    const originalStock = this.sdk.marketdata.restClient.stock;
+    
+    // 用工廠方法創建具有正確類型的客戶端
+    // 特別說明: typedStock 會同時具有 FubonStockClient 和 GenericStockClient 的類型
+    // 這確保了它有所需的所有方法，且返回類型正確
+    const typedStock = sdkProvider.createStockClient(originalStock);
+    this.stock = typedStock;
 
     registerAccountManagementTools(this.server, this.sdk, this.targetAccount);
     registerTradeTools(this.server, this.sdk, this.targetAccount);
     // 註冊市場數據工具
-    registerAllMarketDataTools(this.server, this.stock);
+    registerAllMarketDataTools(this.server, typedStock);
   }
 }

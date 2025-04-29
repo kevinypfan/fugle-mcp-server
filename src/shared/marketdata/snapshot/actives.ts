@@ -30,13 +30,12 @@ export function registerActivesTools(server: McpServer, stock: StockClientInterf
         ),
       limit: z
         .number()
-        .int()
         .positive()
         .max(50)
         .optional()
-        .describe("限制回傳筆數，最多 50 筆"),
+        .describe("限制回傳筆數，預設 30 筆，最多 50 筆"),
     },
-    async ({ market, trade, type, limit = 20 }) => {
+    async ({ market, trade, type, limit = 30 }) => {
       try {
         // 透過API獲取股票成交量值排行
         const data = await stock.snapshot.actives({
@@ -44,6 +43,8 @@ export function registerActivesTools(server: McpServer, stock: StockClientInterf
           trade,
           type,
         });
+
+        data.data = data.data.slice(0, limit);
 
         const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(activesReference, null, 2)}\n\`\`\``;
 

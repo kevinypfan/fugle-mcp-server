@@ -1,5 +1,5 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { StockClientInterface } from "./types";
+import { StockClient } from "../factory/stock-client.factory";
 
 // 從 snapshot 子目錄導入所有工具
 import { 
@@ -42,7 +42,7 @@ export {
 // 定義一個函數來註冊所有市場數據工具
 export const registerAllMarketDataTools = (
   server: McpServer,
-  stock: StockClientInterface
+  stock: StockClient
 ) => {
   // 註冊 snapshot 工具
   registerQuotesTools(server, stock);
