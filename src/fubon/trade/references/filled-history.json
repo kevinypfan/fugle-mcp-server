@@ -1,0 +1,18 @@
+{
+  "date": "成交日期",
+  "branchNo": "分公司代號",
+  "account": "帳號",
+  "orderNo": "委託書號",
+  "market": "市場類型: TAIEX=上市股票, TAISDAQ=上櫃股票, TAIEMG=興櫃股票",
+  "marketType": "盤別種類: Common=整股, Fixing=定盤, IntradayOdd=盤中零股, Odd=盤後零股, Emg=興櫃, EmgOdd=興櫃零股",
+  "stockNo": "股票代號",
+  "buySell": "買賣別: Buy=買, Sell=賣",
+  "orderType": "委託單類型: Stock=現股, Margin=融資, Short=融券, DayTrade=現股當沖",
+  "price": "成交價格",
+  "quantity": "成交數量",
+  "orderQty": "委託數量",
+  "time": "成交時間",
+  "seqNo": "成交序號",
+  "filledNo": "分筆成交序號",
+  "lastTime": "最後異動時間"
+}

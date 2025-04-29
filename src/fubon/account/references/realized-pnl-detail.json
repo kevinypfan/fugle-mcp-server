@@ -1,0 +1,12 @@
+{
+  "date": { "type": "string", "desc": "資料日期" },
+  "branchNo": { "type": "string", "desc": "分公司代號" },
+  "account": { "type": "string", "desc": "帳號" },
+  "stockNo": { "type": "string", "desc": "股票代號" },
+  "buySell": { "type": "number", "desc": "買賣別" },
+  "filledQty": { "type": "number", "desc": "成交股數" },
+  "filledPrice": { "type": "number", "desc": "成交價" },
+  "orderType": { "type": "number", "desc": "委託單類型" },
+  "realizedProfit": { "type": "number", "desc": "已實現獲利金額" },
+  "realizedLoss": { "type": "number", "desc": "已實現損益金額" }
+}

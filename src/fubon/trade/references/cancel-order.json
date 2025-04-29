@@ -1,0 +1,13 @@
+{
+  "functionType": "功能種類: 0=新單, 15=改價, 20=改量, 30=刪單",
+  "date": "日期",
+  "branchNo": "分公司代號",
+  "account": "帳號",
+  "orderNo": "委託書號",
+  "marketType": "盤別種類: Common=整股, Fixing=定盤, IntradayOdd=盤中零股, Odd=盤後零股, Emg=興櫃, EmgOdd=興櫃零股",
+  "stockNo": "股票代號",
+  "afterQty": "改單後有效量",
+  "afterPriceType": "改單後委託價格別: Limit=限價, LimitUp=漲停, LimitDown=跌停, Market=市價, Reference=參考價",
+  "afterPrice": "改單後有效價格",
+  "lastTime": "最後異動時間"
+}

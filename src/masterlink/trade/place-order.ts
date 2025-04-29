@@ -25,7 +25,7 @@ export function registerPlaceOrderTools(
         .describe("買賣別：Buy（買進）、Sell（賣出）"),
       symbol: z.string().describe("股票代號，例如：2888"),
       price: z.string().describe("委託價格，例如：11.5（市價時可為空字串）"),
-      quantity: z.number().int().positive().describe("委託數量（單位：股）"),
+      quantity: z.number().positive().describe("委託數量（單位：股）"),
       marketType: z
         .enum(["Common", "Fixing", "IntradayOdd", "Odd", "Emg"])
         .describe(

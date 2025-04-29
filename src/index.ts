@@ -6,6 +6,11 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { MasterlinkMcp } from "./masterlink";
 
 import { version } from "../package.json";
+import { FubonMcp } from "./fubon";
+import { FugleApiProvider } from "./shared/fundamental/providers";
+import { registerAllFundamentalTools } from "./shared/fundamental";
+import { config } from "./config";
+import { SdkProvider } from "./shared/factory";
 
 // 檢查環境變量
 const { NATIONAL_ID, NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
@@ -40,6 +45,8 @@ if (!fs.existsSync(certPath)) {
 
 class FugleMcpServer {
   private server: McpServer;
+  private fugleProvider: FugleApiProvider;
+  private sdkProvider: SdkProvider;
 
   constructor() {
     this.server = new McpServer({
@@ -47,7 +54,20 @@ class FugleMcpServer {
       version: version,
     });
 
-    new MasterlinkMcp(this.server, certPath);
+    this.fugleProvider = FugleApiProvider.getInstance();
+    this.sdkProvider = SdkProvider.getInstance();
+    
+    // 根據設定選擇要使用的 SDK
+    const sdkType = this.sdkProvider.getSdkType();
+    
+    if (sdkType === 'masterlink') {
+      new MasterlinkMcp(this.server, certPath);
+    } else if (sdkType === 'fubon') {
+      new FubonMcp(this.server, certPath);
+    } else {
+      process.exit(1);
+    }
+    registerAllFundamentalTools(this.server, this.fugleProvider);
   }
 
   async runServer() {
