@@ -24,6 +24,7 @@
   "license": "ISC",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
+    "axios": "^1.9.0",
     "fubon-neo": "file:fubon-neo-2.2.2.tgz",
     "luxon": "^3.5.0",
     "masterlink-sdk": "file:masterlink-sdk-1.0.0.tgz",

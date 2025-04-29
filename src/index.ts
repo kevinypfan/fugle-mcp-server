@@ -7,6 +7,8 @@ import { MasterlinkMcp } from "./masterlink";
 
 import { version } from "../package.json";
 import { FubonMcp } from "./fubon";
+import { FugleApiProvider } from "./shared/fundamental/providers";
+import { registerAllFundamentalTools } from "./shared/fundamental";
 
 // 檢查環境變量
 const { NATIONAL_ID, NOTIONAL_ID, ACCOUNT_PASS, CERT_PASS } = process.env;
@@ -41,6 +43,7 @@ if (!fs.existsSync(certPath)) {
 
 class FugleMcpServer {
   private server: McpServer;
+  private fugleProvider: FugleApiProvider;
 
   constructor() {
     this.server = new McpServer({
@@ -48,8 +51,11 @@ class FugleMcpServer {
       version: version,
     });
 
+    this.fugleProvider = FugleApiProvider.getInstance();
+
     new MasterlinkMcp(this.server, certPath);
     // new FubonMcp(this.server, certPath);
+    registerAllFundamentalTools(this.server, this.fugleProvider);
   }
 
   async runServer() {

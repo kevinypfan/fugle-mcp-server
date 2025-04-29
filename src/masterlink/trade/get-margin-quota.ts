@@ -16,7 +16,7 @@ export function registerMarginQuotaTools(
 ) {
   // 查詢資券配額工具
   server.tool(
-    "get_marginQuota",
+    "get_margin_quota",
     "查詢股票資券配額",
     {
       symbol: z
