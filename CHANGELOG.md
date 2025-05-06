@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.10...v0.0.11) (2025-05-06)
+
+
+### Bug Fixes
+
+* update README.md and Dockerfile ([39ba15d](https://github.com/kevinypfan/fugle-mcp-server/commit/39ba15daba16403bc6f306b2cf3214b6f8073c1e))
+
 ## [0.0.10](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.9...v0.0.10) (2025-04-29)
 
 ## [0.0.9](https://github.com/kevinypfan/fugle-mcp-server/compare/v0.0.8...v0.0.9) (2025-04-29)
