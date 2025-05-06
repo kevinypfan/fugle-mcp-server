@@ -20,7 +20,7 @@ export function registerModifyQuantityTool(
     "修改委託單數量",
     {
       seqNo: z.string().describe("委託單流水序號"),
-      quantity: z.number().describe("新委託數量（設為0表示刪單）")
+      quantity: z.number().describe("新委託數量")
     },
     async ({ seqNo, quantity }) => {
       try {
