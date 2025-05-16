@@ -1,9 +1,9 @@
 # Fugle MCP Server
 
-![Docker Pulls](https://img.shields.io/docker/pulls/kevinypfan/fugle-mcp-server)
+<!-- ![Docker Pulls](https://img.shields.io/docker/pulls/kevinypfan/fugle-mcp-server)
 ![Docker Image Size](https://img.shields.io/docker/image-size/kevinypfan/fugle-mcp-server)
 ![NPM Version](https://img.shields.io/npm/v/fugle-mcp-server)
-![NPM Downloads](https://img.shields.io/npm/dm/fugle-mcp-server)
+![NPM Downloads](https://img.shields.io/npm/dm/fugle-mcp-server) -->
 <!-- ![License](https://img.shields.io/npm/l/fugle-mcp-server) -->
 
 富果 MCP (Model Context Protocol) 伺服器，用於與富果交易系統進行互動。此伺服器支援股票行情查詢和交易功能。
@@ -21,13 +21,13 @@
 ### 使用 NPM
 
 ```bash
-npx fugle-mcp-server
+npx @fugle/mcp-server
 ```
 
 ### 使用 Docker
 
 ```bash
-docker pull kevinypfan/fugle-mcp-server
+docker pull fugle/mcp-server
 ```
 
 ## 使用方法
@@ -51,7 +51,7 @@ docker pull kevinypfan/fugle-mcp-server
 ```json
 {
   "mcpServers": {
-    "fugle-mcp-server": {
+    "@fugle/mcp-server": {
       "command": "docker",
       "args": [
         "run",
@@ -71,7 +71,7 @@ docker pull kevinypfan/fugle-mcp-server
         "-e",
         "ACCOUNT",
         "--mount", "type=bind,src=</path/to/cert.p12>,dst=/app/cert.p12",
-        "kevinypfan/fugle-mcp-server"
+        "fugle/mcp-server"
       ],
       "env": {
         "SDK_TYPE": "masterlink|fubon",
@@ -93,11 +93,11 @@ docker pull kevinypfan/fugle-mcp-server
 ```json
 {
   "mcpServers": {
-    "fugle-mcp-server": {
+    "@fugle/mcp-server": {
       "command": "npx",
       "args": [
         "-y",
-        "fugle-mcp-server"
+        "@fugle/mcp-server"
       ],
       "env": {
         "SDK_TYPE": "masterlink|fubon",

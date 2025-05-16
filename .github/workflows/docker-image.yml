@@ -22,7 +22,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: kevinypfan/fugle-mcp-server
+          images: fugle/mcp-server
           tags: |
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
@@ -45,5 +45,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: kevinypfan/fugle-mcp-server
+          repository: fugle-dev/fugle-mcp-server
           readme-filepath: ./README.md

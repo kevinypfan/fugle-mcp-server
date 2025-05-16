@@ -1,13 +1,14 @@
 {
-  "name": "fugle-mcp-server",
+  "name": "@fugle/mcp-server",
   "version": "0.0.12",
   "description": "",
   "main": "build/index.js",
   "repository": {
-    "url": "https://github.com/kevinypfan/fugle-mcp-server.git"
+    "url": "https://github.com/fugle-dev/fugle-mcp-server.git"
   },
   "bin": {
-    "fugle-mcp-server": "./build/index.js"
+    "fugle-mcp-server": "./build/index.js",
+    "mcp-server": "./build/index.js"
   },
   "files": [
     "build"
@@ -21,7 +22,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.10.2",
     "axios": "^1.9.0",
@@ -40,5 +41,8 @@
   "bundledDependencies": [
     "masterlink-sdk",
     "fubon-neo"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
