@@ -16,6 +16,20 @@
 - 支援 Docker 和 NPM 兩種部署方式
 - 完全兼容 MCP 協議
 
+
+## 前置作業
+
+### 安裝 NPM
+到 Node.js 官方 [下載](https://nodejs.org/en/download) 對應的作業系統平台
+
+## 申請憑證
+
+### 元富證券請使用 [線上憑證申請](https://ml-fugle-api.masterlink.com.tw/FugleSDK/docs/key/) 或下載 [憑證 e 管家](https://www.masterlink.com.tw/certificate-eoperation) 來申請憑證
+⚠️ 使用線上申請憑證之用戶，憑證密碼預設為您的身分證字號
+
+### 富邦證券請下載 [TCEM 憑證管理工具](https://www.fbs.com.tw/Certificate/Management/) 來申請憑證
+⚠️ 此工具僅支援 windows 平台，若您使用 Mac or Linux 請先至 Windows 申請完後，再將檔案移轉到 Mac or Lixux 系統上
+
 ## 安裝
 
 ### 使用 NPM
@@ -42,7 +56,10 @@ docker pull fugle/mcp-server
 - `CERT_PASS`: 憑證密碼
 - `CERT_PATH`: 憑證檔案路徑
 - `ENABLE_ORDER`: 是否開啟下單功能（可選，預設為 false）
-- `ACCOUNT`: 如有多帳戶，可以使用此參數指定登入帳戶（可選，預設為第一個帳戶）
+- `ACCOUNT`: 如有多帳戶，可以使用此參數指定登入帳戶（可選，預設為第一個帳戶）。
+
+ℹ️ 元富帳號範例 ： 592a12345678 ( 包含分公司代碼 )  
+ℹ️ 富邦帳號範例 ： 1234456 ( 不需包含分公司代碼 )
 
 ### Docker 配置
 
