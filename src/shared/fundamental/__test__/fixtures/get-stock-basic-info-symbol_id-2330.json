@@ -1,0 +1,272 @@
+{
+  "data": {
+    "content": {
+      "contentId": "FCNT000017?symbol_id=2330",
+      "contentIdParams": ["symbol_id"],
+      "specName": "商品基本資料",
+      "rawContent": {
+        "symbol_id": "2330",
+        "available_cards": [
+          {
+            "updated_at": "2025-06-04T20:24:45.329Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000001"
+          },
+          {
+            "updated_at": "2025-06-10T05:31:31.550Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000002"
+          },
+          {
+            "updated_at": "2025-06-10T05:50:39.458Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000006"
+          },
+          {
+            "updated_at": "2025-06-09T13:00:35.477Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000007"
+          },
+          {
+            "updated_at": "2025-05-09T06:20:35.483Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000008"
+          },
+          {
+            "updated_at": "2025-06-09T10:12:24.904Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000012"
+          },
+          {
+            "updated_at": "2025-06-10T05:31:31.550Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000013"
+          },
+          {
+            "updated_at": "2025-06-10T03:45:12.284Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000016"
+          },
+          {
+            "updated_at": "2025-06-10T03:45:12.284Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000018"
+          },
+          {
+            "updated_at": "2025-06-07T11:30:51.790Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000022"
+          },
+          {
+            "updated_at": "2025-05-15T10:42:53.213Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000025"
+          },
+          {
+            "updated_at": "2025-05-15T10:42:58.046Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000027"
+          },
+          {
+            "updated_at": "2025-05-15T06:45:38.940Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000028"
+          },
+          {
+            "updated_at": "2024-09-30T10:13:57.068Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000029"
+          },
+          {
+            "updated_at": "2025-06-01T15:19:20.029Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000030"
+          },
+          {
+            "updated_at": "2025-06-10T03:47:48.313Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000035"
+          },
+          {
+            "updated_at": "2025-06-10T05:31:31.550Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000038"
+          },
+          {
+            "updated_at": "2025-06-10T03:54:15.366Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000039"
+          },
+          {
+            "updated_at": "2025-06-10T05:50:59.638Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000040"
+          },
+          {
+            "updated_at": "2025-06-10T04:03:21.446Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000042"
+          },
+          {
+            "updated_at": "2025-06-09T13:30:30.527Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000043"
+          },
+          {
+            "updated_at": "2025-05-15T10:42:53.751Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000044"
+          },
+          {
+            "updated_at": "2025-05-15T10:42:56.956Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000045"
+          },
+          {
+            "updated_at": "2025-06-10T04:02:03.018Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000046"
+          },
+          {
+            "updated_at": "2025-06-10T05:31:44.428Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000049"
+          },
+          {
+            "default_score": 100,
+            "card_spec_id": "FCRD000050"
+          },
+          {
+            "updated_at": "2022-03-29T17:07:01.956Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000051"
+          },
+          {
+            "card_spec_id": "FCRD000053",
+            "default_score": 100,
+            "updated_at": "2024-02-06T13:39:37.437Z"
+          },
+          {
+            "updated_at": "2025-06-10T04:04:30.042Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000054"
+          },
+          {
+            "updated_at": "2025-06-10T03:18:16.054Z",
+            "default_score": 100,
+            "card_spec_id": "FCRD000055"
+          },
+          {
+            "card_spec_id": "FCRD000097",
+            "default_score": 100,
+            "updated_at": "2025-05-29T09:25:33.652Z"
+          },
+          {
+            "card_spec_id": "FCRD000060",
+            "default_score": 100,
+            "updated_at": "2025-06-10T00:27:07.041Z"
+          },
+          {
+            "card_spec_id": "FCRD000057",
+            "default_score": 100,
+            "updated_at": "2025-06-10T05:31:31.550Z"
+          },
+          {
+            "card_spec_id": "FCRD000058",
+            "default_score": 100,
+            "updated_at": "2025-06-09T14:24:33.524Z"
+          },
+          {
+            "card_spec_id": "FCRD000059",
+            "default_score": 100,
+            "updated_at": "2025-06-09T14:35:14.373Z"
+          },
+          {
+            "card_spec_id": "FCRD000061",
+            "default_score": 100,
+            "updated_at": "2025-06-09T18:05:32.485Z"
+          },
+          {
+            "card_spec_id": "FCRD000063",
+            "default_score": 100,
+            "updated_at": "2025-06-09T18:12:50.398Z"
+          },
+          {
+            "card_spec_id": "FCRD000066",
+            "default_score": 100,
+            "updated_at": "2025-06-07T11:30:51.790Z"
+          },
+          {
+            "card_spec_id": "FCRD000068",
+            "default_score": 100,
+            "updated_at": "2025-06-09T14:35:06.073Z"
+          },
+          {
+            "card_spec_id": "FCRD000023",
+            "default_score": 100,
+            "updated_at": "2025-06-10T03:48:52.387Z"
+          },
+          {
+            "default_score": 100,
+            "card_spec_id": "FCRD000069",
+            "updated_at": "2025-05-09T06:20:36.870Z"
+          },
+          {
+            "card_spec_id": "FCRD000070",
+            "default_score": 100,
+            "updated_at": "2019-10-22T19:38:08.668Z"
+          },
+          {
+            "card_spec_id": "FCRD000062",
+            "default_score": 100,
+            "updated_at": "2025-06-09T16:57:47.239Z"
+          },
+          {
+            "card_spec_id": "FCRD000071",
+            "default_score": 100,
+            "updated_at": "2025-06-10T03:56:33.848Z"
+          },
+          {
+            "default_score": 100,
+            "card_spec_id": "FCRD000073",
+            "updated_at": "2024-08-19T08:41:30.253Z"
+          },
+          {
+            "card_spec_id": "FCRD000075",
+            "default_score": 100,
+            "updated_at": "2025-06-09T12:01:23.245Z"
+          },
+          {
+            "card_spec_id": "FCRD000076",
+            "default_score": 100,
+            "updated_at": "2025-05-15T10:42:54.283Z"
+          },
+          {
+            "card_spec_id": "FCRD000098",
+            "default_score": 100,
+            "updated_at": "2025-05-15T10:43:01.482Z"
+          },
+          {
+            "card_spec_id": "FCRD000099",
+            "default_score": 100,
+            "updated_at": "2025-05-15T10:42:57.498Z"
+          }
+        ],
+        "off_date": null,
+        "on_date": "1994-09-04T16:00:00.000Z",
+        "industry": "半導體業",
+        "aliases": ["台灣積體電路製造"],
+        "name": "台積電",
+        "category": "stock",
+        "__v": 11,
+        "created_at": "2016-10-04T03:17:50.212Z",
+        "updated_at": "2022-04-07T23:37:12.635Z",
+        "country": "tw",
+        "exchange": "twse",
+        "mkt": "sem",
+        "is_tradable": true,
+        "market_tag": "tw"
+      }
+    }
+  }
+}

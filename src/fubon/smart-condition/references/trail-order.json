@@ -1,0 +1,57 @@
+{
+  "description": "查詢追蹤停利委託 API 回傳格式",
+  "fields": {
+    "is_success": {
+      "type": "boolean",
+      "description": "API 執行成功狀態"
+    },
+    "message": {
+      "type": "string",
+      "description": "錯誤訊息（當 is_success 為 false 時）"
+    },
+    "data": {
+      "type": "array",
+      "description": "追蹤停利委託列表"
+    },
+    "data[].guid": {
+      "type": "string",
+      "description": "追蹤停利單唯一識別碼"
+    },
+    "data[].account": {
+      "type": "string",
+      "description": "交易帳號"
+    },
+    "data[].status": {
+      "type": "string",
+      "description": "追蹤停利狀態"
+    },
+    "data[].symbol": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data[].base_price": {
+      "type": "number",
+      "description": "基準價格"
+    },
+    "data[].current_price": {
+      "type": "number",
+      "description": "目前追蹤價格"
+    },
+    "data[].trail_percentage": {
+      "type": "number",
+      "description": "追蹤百分比"
+    },
+    "data[].direction": {
+      "type": "string",
+      "description": "追蹤方向"
+    },
+    "data[].create_time": {
+      "type": "string",
+      "description": "建立時間"
+    },
+    "data[].last_update": {
+      "type": "string",
+      "description": "最後更新時間"
+    }
+  }
+}

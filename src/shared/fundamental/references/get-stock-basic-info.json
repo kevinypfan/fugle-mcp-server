@@ -1,0 +1,49 @@
+{
+  "description": "股票基本資料 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱（商品基本資料）"
+    },
+    "data.content.rawContent": {
+      "type": "object",
+      "description": "原始內容資料"
+    },
+    "data.content.rawContent.symbol_id": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.content.rawContent.available_cards": {
+      "type": "array",
+      "description": "可用資料卡片清單"
+    },
+    "data.content.rawContent.available_cards[].updated_at": {
+      "type": "string",
+      "description": "資料更新時間（ISO 8601 格式）"
+    },
+    "data.content.rawContent.available_cards[].default_score": {
+      "type": "number",
+      "description": "預設評分（通常為100）"
+    },
+    "data.content.rawContent.available_cards[].card_spec_id": {
+      "type": "string",
+      "description": "資料卡片規格識別碼"
+    }
+  }
+}

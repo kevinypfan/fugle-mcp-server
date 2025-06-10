@@ -4,6 +4,7 @@ import { RestStockClient } from "fubon-neo/marketdata/rest/stock/client";
 import { Account } from "fubon-neo/trade";
 import { registerAccountManagementTools } from "./account";
 import { registerTradeTools } from "./trade";
+import { registerSmartConditionTools } from "./smart-condition";
 import { SdkProvider } from "../shared/factory";
 import { registerAllMarketDataTools } from "../shared/marketdata";
 
@@ -63,6 +64,7 @@ export class FubonMcp {
 
     registerAccountManagementTools(this.server, this.sdk, this.targetAccount);
     registerTradeTools(this.server, this.sdk, this.targetAccount);
+    registerSmartConditionTools(this.server, this.sdk, this.targetAccount);
     // 註冊市場數據工具
     registerAllMarketDataTools(this.server, typedStock);
   }

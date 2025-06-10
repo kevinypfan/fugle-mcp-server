@@ -1,0 +1,53 @@
+{
+  "description": "依 ID 查詢條件單 API 回傳格式",
+  "fields": {
+    "is_success": {
+      "type": "boolean",
+      "description": "API 執行成功狀態"
+    },
+    "message": {
+      "type": "string",
+      "description": "錯誤訊息（當 is_success 為 false 時）"
+    },
+    "data": {
+      "type": "object",
+      "description": "條件單詳細資料"
+    },
+    "data.guid": {
+      "type": "string",
+      "description": "條件單唯一識別碼"
+    },
+    "data.account": {
+      "type": "string",
+      "description": "交易帳號"
+    },
+    "data.status": {
+      "type": "string",
+      "description": "條件單狀態"
+    },
+    "data.symbol": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.create_time": {
+      "type": "string",
+      "description": "建立時間"
+    },
+    "data.update_time": {
+      "type": "string",
+      "description": "最後更新時間"
+    },
+    "data.condition_detail": {
+      "type": "object",
+      "description": "條件詳細設定"
+    },
+    "data.order_detail": {
+      "type": "object",
+      "description": "委託詳細設定"
+    },
+    "data.execution_records": {
+      "type": "array",
+      "description": "執行記錄陣列"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+    "data": {
+        "content": {
+            "contentId": "FCNT000137?symbol_id=2330",
+            "contentIdParams": [
+                "symbol_id"
+            ],
+            "specName": "最近重要日期(除權息/股東會)",
+            "rawContent": {
+                "cshDivDate": "2025-06-11T16:00:00.000Z",
+                "risuYmd": null,
+                "cshdivPayDate": "2025-07-09T16:00:00.000Z",
+                "meetDate": null,
+                "capitalReductionStopTradingDate": null,
+                "capitalReductionRecoverTradingDate": null,
+                "parValueChangedStopTradingDate": null,
+                "parValueChangedRecoverTradingDate": null,
+                "capitalIncreaseRisuYmd": null,
+                "updatedAt": "2025-06-09T16:00:00.000Z"
+            }
+        }
+    }
+}

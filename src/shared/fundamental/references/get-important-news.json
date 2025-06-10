@@ -1,0 +1,65 @@
+{
+  "description": "重大訊息查詢 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱（重大訊息）"
+    },
+    "data.content.rawContent": {
+      "type": "array",
+      "description": "重大訊息清單"
+    },
+    "data.content.rawContent[]._id": {
+      "type": "string",
+      "description": "訊息唯一識別碼"
+    },
+    "data.content.rawContent[].symbol_id": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.content.rawContent[].name": {
+      "type": "string",
+      "description": "公司名稱"
+    },
+    "data.content.rawContent[].timestamp": {
+      "type": "string",
+      "description": "公告時間（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].title": {
+      "type": "string",
+      "description": "重大訊息標題"
+    },
+    "data.content.rawContent[].url": {
+      "type": "string",
+      "description": "公開資訊觀測站連結"
+    },
+    "data.content.rawContent[].descs": {
+      "type": "array",
+      "description": "詳細描述清單"
+    },
+    "data.content.rawContent[].descs[].title": {
+      "type": "string",
+      "description": "描述項目標題"
+    },
+    "data.content.rawContent[].descs[].content": {
+      "type": "array",
+      "description": "描述項目內容清單"
+    }
+  }
+}

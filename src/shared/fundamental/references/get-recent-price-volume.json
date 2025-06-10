@@ -1,0 +1,65 @@
+{
+  "description": "近 3 日價量資料 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱（價量-近3日）"
+    },
+    "data.content.rawContent": {
+      "type": "array",
+      "description": "價量資料清單"
+    },
+    "data.content.rawContent[].date": {
+      "type": "string",
+      "description": "交易日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].volume": {
+      "type": "number",
+      "description": "成交量（張）"
+    },
+    "data.content.rawContent[].amount": {
+      "type": "number",
+      "description": "成交金額（元）"
+    },
+    "data.content.rawContent[].open": {
+      "type": "number",
+      "description": "開盤價（元）"
+    },
+    "data.content.rawContent[].high": {
+      "type": "number",
+      "description": "最高價（元）"
+    },
+    "data.content.rawContent[].low": {
+      "type": "number",
+      "description": "最低價（元）"
+    },
+    "data.content.rawContent[].close": {
+      "type": "number",
+      "description": "收盤價（元）"
+    },
+    "data.content.rawContent[].change": {
+      "type": "number",
+      "description": "漲跌金額（元）"
+    },
+    "data.content.rawContent[].change_rate": {
+      "type": "number",
+      "description": "漲跌幅（%）"
+    }
+  }
+}

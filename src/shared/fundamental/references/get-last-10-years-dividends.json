@@ -1,0 +1,81 @@
+{
+  "description": "最近 10 年股利資料 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱（最近10年股利）"
+    },
+    "data.content.rawContent": {
+      "type": "array",
+      "description": "股利資料清單"
+    },
+    "data.content.rawContent[].divYy": {
+      "type": "number",
+      "description": "股利年度"
+    },
+    "data.content.rawContent[].cshdiv": {
+      "type": "number|null",
+      "description": "現金股利金額（元）"
+    },
+    "data.content.rawContent[].cshdivDate": {
+      "type": "string|null",
+      "description": "除息日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].stkdiv": {
+      "type": "number|null",
+      "description": "股票股利（股）"
+    },
+    "data.content.rawContent[].risuYmd": {
+      "type": "string|null",
+      "description": "除權日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].divBasicDate": {
+      "type": "string|null",
+      "description": "股利基準日（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].cshdivPayDate": {
+      "type": "string|null",
+      "description": "現金股利發放日（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].fillDivDays": {
+      "type": "number",
+      "description": "填息天數"
+    },
+    "data.content.rawContent[].divYield": {
+      "type": "number",
+      "description": "股利殖利率（%）"
+    },
+    "data.content.rawContent[].divPeriod": {
+      "type": "string",
+      "description": "股利期間（Q1/Q2/Q3/Q4）"
+    },
+    "data.content.rawContent[].source": {
+      "type": "string",
+      "description": "資料來源"
+    },
+    "data.content.rawContent[].eps": {
+      "type": "number",
+      "description": "每股盈餘（元）"
+    },
+    "data.content.rawContent[].payoutRatio": {
+      "type": "number",
+      "description": "配息比率（0-1之間的小數）"
+    }
+  }
+}

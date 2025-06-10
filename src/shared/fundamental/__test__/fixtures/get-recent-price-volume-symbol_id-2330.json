@@ -1,0 +1,44 @@
+{
+  "data": {
+    "content": {
+      "contentId": "FCNT000013?symbol_id=2330",
+      "contentIdParams": ["symbol_id"],
+      "specName": "價量-近3日",
+      "rawContent": [
+        {
+          "date": "2025-06-04T16:00:00.000Z",
+          "volume": 27047,
+          "amount": 26936792104,
+          "open": 1000,
+          "high": 1000,
+          "low": 991,
+          "close": 998,
+          "change": 8,
+          "change_rate": 0.81
+        },
+        {
+          "date": "2025-06-05T16:00:00.000Z",
+          "volume": 18797,
+          "amount": 18688985614,
+          "open": 997,
+          "high": 997,
+          "low": 991,
+          "close": 995,
+          "change": -3,
+          "change_rate": -0.3
+        },
+        {
+          "date": "2025-06-08T16:00:00.000Z",
+          "volume": 23952,
+          "amount": 24100014375,
+          "open": 1005,
+          "high": 1010,
+          "low": 1000,
+          "close": 1005,
+          "change": 10,
+          "change_rate": 1.01
+        }
+      ]
+    }
+  }
+}
