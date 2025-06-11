@@ -28,19 +28,19 @@ export function registerTrailProfitTool(
       
       // Trail order object
       trail_symbol: z.string().describe("追蹤股票代號"),
-      trail_price: z.number().describe("基準價格（最多2位小數）"),
+      trail_price: z.number().describe("基準價格（只可輸入至多小數點後兩位，若超出將造成系統洗價失敗）"),
       trail_direction: z.enum(["Up", "Down"]).describe(
-        "追蹤方向：Up = 向上追蹤, Down = 向下追蹤"
+        "追蹤方向：Up = 向上追蹤（股價上漲時調高基準價，下跌時保持基準價不變）, Down = 向下追蹤（股價下跌時調低基準價，上漲時保持基準價不變）"
       ),
-      trail_percentage: z.number().describe("追蹤百分比閾值"),
-      trail_buysell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買, Sell = 賣"),
-      trail_quantity: z.number().describe("委託數量"),
+      trail_percentage: z.number().describe("追蹤百分比閾值（整數，例如：5 代表 5%）- 當股價觸及以基準價計算的漲跌百分比時觸發下單"),
+      trail_buysell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買進, Sell = 賣出"),
+      trail_quantity: z.number().describe("委託股數（整數）"),
       trail_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice", "LimitUp", "LimitDown", "Reference"]).describe(
-        "執行價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價, LimitUp = 漲停, LimitDown = 跌停, Reference = 參考價(平盤價)"
+        "價格類型：Limit = 限價, Market = 市價, BidPrice = 買進價, AskPrice = 賣出價, MatchedPrice = 成交價, LimitUp = 漲停價, LimitDown = 跌停價, Reference = 參考價(平盤價)"
       ),
-      trail_diff: z.number().describe("價格跳動調整（正負數）"),
+      trail_diff: z.number().describe("買賣價格檔數調整（根據價格類型加減檔數）- 正值為向上加檔數，負值為向下加檔數"),
       trail_time_in_force: z.enum(["ROD", "IOC", "FOK"]).describe(
-        "委託條件：ROD = 當日有效, IOC = 立即成交否則取消, FOK = 全部成交否則取消"
+        "委託條件：ROD = 當日有效(Rest of Day), IOC = 立即成交否則取消(Immediate-or-Cancel), FOK = 全部成交否則取消(Fill-or-Kill)"
       ),
       trail_order_type: z.enum(["Stock", "Margin", "Short"]).describe(
         "委託類型：Stock = 現股, Margin = 融資, Short = 融券"

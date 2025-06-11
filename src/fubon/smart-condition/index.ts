@@ -37,8 +37,8 @@ export function registerSmartConditionTools(
   registerGetConditionHistoryTool(server, sdk, account);
   
   // Register time slice order tools
-  registerTimeSliceOrderTool(server, sdk, account);
-  registerGetTimeSliceOrderTool(server, sdk, account);
+  // registerTimeSliceOrderTool(server, sdk, account);
+  // registerGetTimeSliceOrderTool(server, sdk, account);
   
   // Register trail profit tools
   registerTrailProfitTool(server, sdk, account);
