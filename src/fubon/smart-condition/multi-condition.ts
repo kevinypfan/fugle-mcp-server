@@ -28,7 +28,7 @@ export function registerMultiConditionTool(
       
       // Multiple conditions array (JSON string)
       conditions: z.string().describe(
-        "條件陣列 JSON 字串，格式：[{\"market_type\":\"Reference|Scheduled\",\"symbol\":\"2330\",\"trigger\":\"BidPrice|AskPrice|MatchedPrice|TotalQuantity|Time|TotalValue\",\"trigger_value\":500,\"comparison\":\"GreaterThanOrEqual|LessThanOrEqual|GreaterThan|LessThan\"}]"
+        "條件陣列 JSON 字串，格式：[{\"marketType\":\"Reference|Scheduled\",\"symbol\":\"2330\",\"trigger\":\"BidPrice|AskPrice|MatchedPrice|TotalQuantity|Time\",\"triggerValue\":\"500\",\"comparison\":\"GreaterThanOrEqual|LessThanOrEqual|GreaterThan|LessThan\"}]"
       ),
       
       // Order object
@@ -93,9 +93,9 @@ export function registerMultiConditionTool(
 
         // Validate each condition
         for (const condition of conditions) {
-          if (!condition.market_type || !condition.symbol || !condition.trigger || 
-              condition.trigger_value === undefined || !condition.comparison) {
-            throw new Error("每個條件必須包含 market_type, symbol, trigger, trigger_value, comparison 欄位");
+          if (!condition.marketType || !condition.symbol || !condition.trigger || 
+              condition.triggerValue === undefined || !condition.comparison) {
+            throw new Error("每個條件必須包含 marketType, symbol, trigger, triggerValue, comparison 欄位");
           }
         }
 
