@@ -74,22 +74,18 @@
   "order_order_type": "Stock",
   "tpsl_stop_sign": "Full",
   "tpsl_end_date": "20241231",
-  "tp_buy_sell": "Sell",
-  "tp_symbol": "2330",
+  "tp_target_price": 650,
   "tp_price": 650,
-  "tp_quantity": 1000,
-  "tp_market_type": "Common",
   "tp_price_type": "Limit",
   "tp_time_in_force": "ROD",
   "tp_order_type": "Stock",
-  "sl_buy_sell": "Sell",
-  "sl_symbol": "2330",
+  "tp_trigger": "MatchedPrice",
+  "sl_target_price": 570,
   "sl_price": 570,
-  "sl_quantity": 1000,
-  "sl_market_type": "Common",
   "sl_price_type": "Limit",
   "sl_time_in_force": "ROD",
-  "sl_order_type": "Stock"
+  "sl_order_type": "Stock",
+  "sl_trigger": "MatchedPrice"
 }
 ```
 

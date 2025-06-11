@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register get trail order tool to MCP Server
@@ -13,7 +14,7 @@ export function registerGetTrailOrderTool(
 ) {
   server.tool(
     "get_trail_order",
-    "查詢追蹤停利委託",
+    loadToolDescription('get-trail-order', '查詢追蹤停利委託'),
     {},
     async () => {
       try {

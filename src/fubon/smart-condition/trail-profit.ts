@@ -6,6 +6,7 @@ import {
   TrailOrder
 } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register trail profit order tool to MCP Server
@@ -17,7 +18,7 @@ export function registerTrailProfitTool(
 ) {
   server.tool(
     "trail_profit_order",
-    "建立追蹤停利委託",
+    loadToolDescription('trail-profit', '建立追蹤停利委託'),
     {
       start_date: z.string().describe("監控開始日期 (YYYYMMDD)"),
       end_date: z.string().describe("監控結束日期 (YYYYMMDD)"),
@@ -34,10 +35,16 @@ export function registerTrailProfitTool(
       trail_percentage: z.number().describe("追蹤百分比閾值"),
       trail_buysell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買, Sell = 賣"),
       trail_quantity: z.number().describe("委託數量"),
-      trail_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice"]).describe(
-        "執行價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價"
+      trail_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice", "LimitUp", "LimitDown", "Reference"]).describe(
+        "執行價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價, LimitUp = 漲停, LimitDown = 跌停, Reference = 參考價(平盤價)"
       ),
       trail_diff: z.number().describe("價格跳動調整（正負數）"),
+      trail_time_in_force: z.enum(["ROD", "IOC", "FOK"]).describe(
+        "委託條件：ROD = 當日有效, IOC = 立即成交否則取消, FOK = 全部成交否則取消"
+      ),
+      trail_order_type: z.enum(["Stock", "Margin", "Short"]).describe(
+        "委託類型：Stock = 現股, Margin = 融資, Short = 融券"
+      ),
     },
     async (params) => {
       try {
@@ -57,8 +64,8 @@ export function registerTrailProfitTool(
           quantity: params.trail_quantity,
           priceType: params.trail_price_type as any,
           diff: params.trail_diff,
-          timeInForce: "ROD" as any,
-          orderType: "Stock" as any,
+          timeInForce: params.trail_time_in_force as any,
+          orderType: params.trail_order_type as any,
         };
 
         // Call SDK API

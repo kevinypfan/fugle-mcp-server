@@ -7,6 +7,7 @@ import {
   ConditionOrder
 } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register time slice order tool to MCP Server
@@ -18,7 +19,7 @@ export function registerTimeSliceOrderTool(
 ) {
   server.tool(
     "time_slice_order",
-    "建立時間切片委託",
+    loadToolDescription('time-slice-order', '建立時間切片委託'),
     {
       start_date: z.string().describe("監控開始日期 (YYYYMMDD)"),
       end_date: z.string().describe("監控結束日期 (YYYYMMDD)"),
@@ -42,10 +43,10 @@ export function registerTimeSliceOrderTool(
       order_price: z.number().describe("委託價格"),
       order_quantity: z.number().describe("委託數量"),
       order_market_type: z.enum(["Common", "Fixing", "IntradayOdd", "Odd"]).describe(
-        "市場類型：Common = 一般, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 零股"
+        "市場類型：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股"
       ),
-      order_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice"]).describe(
-        "價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價"
+      order_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice", "LimitUp", "LimitDown", "Reference"]).describe(
+        "價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價, LimitUp = 漲停, LimitDown = 跌停, Reference = 參考價(平盤價)"
       ),
       order_time_in_force: z.enum(["ROD", "IOC", "FOK"]).describe(
         "委託條件：ROD = 當日有效, IOC = 立即成交否則取消, FOK = 全部成交否則取消"

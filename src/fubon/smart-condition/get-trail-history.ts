@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register get trail history tool to MCP Server
@@ -13,7 +14,7 @@ export function registerGetTrailHistoryTool(
 ) {
   server.tool(
     "get_trail_history",
-    "查詢追蹤停利歷史紀錄",
+    loadToolDescription('get-trail-history', '查詢追蹤停利歷史'),
     {
       start_date: z.string().describe("查詢開始日期 (YYYYMMDD)"),
       end_date: z.string().describe("查詢結束日期 (YYYYMMDD)"),

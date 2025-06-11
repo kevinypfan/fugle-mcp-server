@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register get time slice order tool to MCP Server
@@ -13,7 +14,7 @@ export function registerGetTimeSliceOrderTool(
 ) {
   server.tool(
     "get_time_slice_order",
-    "查詢時間切片委託明細",
+    loadToolDescription('get-time-slice-order', '查詢時間切片委託'),
     {
       batch_no: z.string().describe("批次號碼"),
     },

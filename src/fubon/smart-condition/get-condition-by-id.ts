@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register get condition by ID tool to MCP Server
@@ -13,7 +14,7 @@ export function registerGetConditionByIdTool(
 ) {
   server.tool(
     "get_condition_by_id",
-    "依 ID 查詢條件單",
+    loadToolDescription('get-condition-by-id', '查詢條件單資訊'),
     {
       guid: z.string().describe("條件單 GUID 識別碼"),
     },

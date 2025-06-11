@@ -2,11 +2,11 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { 
   Account,
-  StopSign,
   Condition,
   ConditionOrder
 } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register multi condition order tool to MCP Server
@@ -18,7 +18,7 @@ export function registerMultiConditionTool(
 ) {
   server.tool(
     "multi_condition_order",
-    "建立多重條件單",
+    loadToolDescription('multi-condition', '建立多重條件單'),
     {
       start_date: z.string().describe("監控開始日期 (YYYYMMDD)"),
       end_date: z.string().describe("監控結束日期 (YYYYMMDD)"),
@@ -28,7 +28,7 @@ export function registerMultiConditionTool(
       
       // Multiple conditions array (JSON string)
       conditions: z.string().describe(
-        "條件陣列 JSON 字串，格式：[{\"market_type\":\"Reference\",\"symbol\":\"2330\",\"trigger\":\"MatchedPrice\",\"trigger_value\":500,\"comparison\":\"GreaterThan\"}]"
+        "條件陣列 JSON 字串，格式：[{\"market_type\":\"Reference|Scheduled\",\"symbol\":\"2330\",\"trigger\":\"BidPrice|AskPrice|MatchedPrice|TotalQuantity|Time|TotalValue\",\"trigger_value\":500,\"comparison\":\"GreaterThanOrEqual|LessThanOrEqual|GreaterThan|LessThan\"}]"
       ),
       
       // Order object
@@ -37,10 +37,10 @@ export function registerMultiConditionTool(
       order_price: z.number().describe("委託價格"),
       order_quantity: z.number().describe("委託數量"),
       order_market_type: z.enum(["Common", "Fixing", "IntradayOdd", "Odd"]).describe(
-        "市場類型：Common = 一般, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 零股"
+        "市場類型：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股"
       ),
-      order_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice"]).describe(
-        "價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價"
+      order_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice", "LimitUp", "LimitDown", "Reference"]).describe(
+        "價格類型：Limit = 限價, Market = 市價, BidPrice = 買價, AskPrice = 賣價, MatchedPrice = 成交價, LimitUp = 漲停, LimitDown = 跌停, Reference = 參考價(平盤價)"
       ),
       order_time_in_force: z.enum(["ROD", "IOC", "FOK"]).describe(
         "委託條件：ROD = 當日有效, IOC = 立即成交否則取消, FOK = 全部成交否則取消"
@@ -51,30 +51,26 @@ export function registerMultiConditionTool(
       
       // Optional TPSL
       tpsl_stop_sign: z.enum(["Full", "Partial", "UntilEnd"]).optional().describe(
-        "TPSL停損條件（選填）"
+        "TPSL停損條件（選填）：Full=全部成交為止, Partial=部分成交為止, UntilEnd=效期結束為止"
       ),
       tpsl_end_date: z.string().optional().describe("TPSL結束日期（選填，YYYYMMDD）"),
       tpsl_intraday: z.boolean().optional().describe("TPSL當日沖銷（選填）"),
       
       // Take Profit order (optional)
-      tp_buy_sell: z.enum(["Buy", "Sell"]).optional().describe("停利買賣別（選填）"),
-      tp_symbol: z.string().optional().describe("停利股票代號（選填）"),
-      tp_price: z.number().optional().describe("停利價格（選填）"),
-      tp_quantity: z.number().optional().describe("停利數量（選填）"),
-      tp_market_type: z.enum(["Common", "Fixing", "IntradayOdd", "Odd"]).optional().describe("停利市場類型（選填）"),
-      tp_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice"]).optional().describe("停利價格類型（選填）"),
-      tp_time_in_force: z.enum(["ROD", "IOC", "FOK"]).optional().describe("停利委託條件（選填）"),
-      tp_order_type: z.enum(["Stock", "Margin", "Short"]).optional().describe("停利委託類型（選填）"),
+      tp_target_price: z.number().optional().describe("停利觸發價（選填）"),
+      tp_price: z.number().optional().describe("停利委託價（選填）"),
+      tp_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice", "LimitUp", "LimitDown", "Reference"]).optional().describe("停利價格類型（選填）：Limit=限價, Market=市價, BidPrice=買價, AskPrice=賣價, MatchedPrice=成交價, LimitUp=漲停, LimitDown=跌停, Reference=參考價"),
+      tp_time_in_force: z.enum(["ROD", "IOC", "FOK"]).optional().describe("停利委託條件（選填）：ROD=當日有效, IOC=立即成交否則取消, FOK=全部成交否則取消"),
+      tp_order_type: z.enum(["Stock", "Margin", "Short"]).optional().describe("停利委託類型（選填）：Stock=現股, Margin=融資, Short=融券"),
+      tp_trigger: z.enum(["BidPrice", "AskPrice", "MatchedPrice"]).optional().describe("停利觸發條件（選填）：BidPrice=買價, AskPrice=賣價, MatchedPrice=成交價"),
       
       // Stop Loss order (optional)
-      sl_buy_sell: z.enum(["Buy", "Sell"]).optional().describe("停損買賣別（選填）"),
-      sl_symbol: z.string().optional().describe("停損股票代號（選填）"),
-      sl_price: z.number().optional().describe("停損價格（選填）"),
-      sl_quantity: z.number().optional().describe("停損數量（選填）"),
-      sl_market_type: z.enum(["Common", "Fixing", "IntradayOdd", "Odd"]).optional().describe("停損市場類型（選填）"),
-      sl_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice"]).optional().describe("停損價格類型（選填）"),
-      sl_time_in_force: z.enum(["ROD", "IOC", "FOK"]).optional().describe("停損委託條件（選填）"),
-      sl_order_type: z.enum(["Stock", "Margin", "Short"]).optional().describe("停損委託類型（選填）"),
+      sl_target_price: z.number().optional().describe("停損觸發價（選填）"),
+      sl_price: z.number().optional().describe("停損委託價（選填）"),
+      sl_price_type: z.enum(["Limit", "Market", "BidPrice", "AskPrice", "MatchedPrice", "LimitUp", "LimitDown", "Reference"]).optional().describe("停損價格類型（選填）：Limit=限價, Market=市價, BidPrice=買價, AskPrice=賣價, MatchedPrice=成交價, LimitUp=漲停, LimitDown=跌停, Reference=參考價"),
+      sl_time_in_force: z.enum(["ROD", "IOC", "FOK"]).optional().describe("停損委託條件（選填）：ROD=當日有效, IOC=立即成交否則取消, FOK=全部成交否則取消"),
+      sl_order_type: z.enum(["Stock", "Margin", "Short"]).optional().describe("停損委託類型（選填）：Stock=現股, Margin=融資, Short=融券"),
+      sl_trigger: z.enum(["BidPrice", "AskPrice", "MatchedPrice"]).optional().describe("停損觸發條件（選填）：BidPrice=買價, AskPrice=賣價, MatchedPrice=成交價"),
     },
     async (params) => {
       try {
@@ -119,36 +115,32 @@ export function registerMultiConditionTool(
         let tpsl: any = undefined;
         if (params.tpsl_stop_sign) {
           tpsl = {
-            stop_sign: params.tpsl_stop_sign as StopSign,
-            end_date: params.tpsl_end_date,
+            stopSign: params.tpsl_stop_sign as any,
+            endDate: params.tpsl_end_date,
             intraday: params.tpsl_intraday,
           } as any;
 
           // Add take profit order if provided
-          if (params.tp_buy_sell) {
+          if (params.tp_target_price) {
             tpsl.tp = {
-              buySell: params.tp_buy_sell as any,
-              symbol: params.tp_symbol!,
-              price: String(params.tp_price!),
-              quantity: params.tp_quantity!,
-              marketType: params.tp_market_type! as any,
+              targetPrice: String(params.tp_target_price),
+              price: params.tp_price ? String(params.tp_price) : "",
               priceType: params.tp_price_type! as any,
               timeInForce: params.tp_time_in_force! as any,
               orderType: params.tp_order_type! as any,
+              trigger: params.tp_trigger as any,
             };
           }
 
           // Add stop loss order if provided
-          if (params.sl_buy_sell) {
+          if (params.sl_target_price) {
             tpsl.sl = {
-              buySell: params.sl_buy_sell as any,
-              symbol: params.sl_symbol!,
-              price: String(params.sl_price!),
-              quantity: params.sl_quantity!,
-              marketType: params.sl_market_type! as any,
+              targetPrice: String(params.sl_target_price),
+              price: params.sl_price ? String(params.sl_price) : "",
               priceType: params.sl_price_type! as any,
               timeInForce: params.sl_time_in_force! as any,
               orderType: params.sl_order_type! as any,
+              trigger: params.sl_trigger as any,
             };
           }
         }

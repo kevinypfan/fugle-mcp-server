@@ -14,7 +14,7 @@ export interface Result<T = any> {
 export type MarketType = 'Reference' | 'Scheduled';
 
 // Trigger type enum  
-export type TriggerType = 'BidPrice' | 'AskPrice' | 'MatchedPrice' | 'TotalQuantity' | 'Time';
+export type TriggerType = 'BidPrice' | 'AskPrice' | 'MatchedPrice' | 'TotalQuantity' | 'Time' | 'TotalValue';
 
 // Comparison operator enum
 export type ComparisonOperator = 'GreaterThanOrEqual' | 'LessThanOrEqual' | 'GreaterThan' | 'LessThan';
@@ -26,7 +26,7 @@ export type BuySellAction = 'Buy' | 'Sell';
 export type MarketSession = 'Common' | 'Fixing' | 'IntradayOdd' | 'Odd';
 
 // Price type enum
-export type PriceType = 'Limit' | 'Market' | 'BidPrice' | 'AskPrice' | 'MatchedPrice';
+export type PriceType = 'Limit' | 'Market' | 'BidPrice' | 'AskPrice' | 'MatchedPrice' | 'LimitUp' | 'LimitDown' | 'Reference';
 
 // Time in force enum
 export type TimeInForce = 'ROD' | 'IOC' | 'FOK';

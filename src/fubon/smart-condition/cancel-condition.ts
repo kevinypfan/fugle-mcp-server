@@ -2,6 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolDescription } from "./utils.js";
 
 /**
  * Register cancel condition order tool to MCP Server
@@ -13,7 +14,7 @@ export function registerCancelConditionTool(
 ) {
   server.tool(
     "cancel_condition_order",
-    "取消條件單",
+    loadToolDescription('cancel-condition', '取消條件單'),
     {
       guid: z.string().describe("條件單 GUID 識別碼"),
     },
