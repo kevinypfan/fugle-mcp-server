@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { FugleApiProvider } from "../providers";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
+import path from "path";
 
 /**
  * 註冊公司近5年月營收查詢工具到 MCP Server
@@ -11,35 +13,25 @@ export function registerMonthlyRevenueTool(
   server: McpServer,
   provider: FugleApiProvider
 ) {
-  // 取得公司近5年月營收工具
+  const currentDir = path.join(__dirname, '..');
+  const { description } = loadToolMetadata(currentDir, 'get-monthly-revenue', '獲取公司近5年月營收');
+  
   server.tool(
     "get_monthly_revenue",
-    "獲取公司近5年月營收",
+    description,
     {
       symbolId: z.string().describe("股票代碼"),
     },
-    async ({ symbolId }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-monthly-revenue',
+      async ({ symbolId }) => {
         const data = await provider.getMonthlyRevenue(symbolId);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify({ data }),
-            },
-          ],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return { data };
+      },
+      {
+        errorMessage: "查詢時發生錯誤",
       }
-    }
+    )
   );
 }

@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StockClientInterface } from "../types";
 import { z } from "zod";
-import quotesReference from "./references/quotes.json";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
 
 /**
  * 註冊股票行情快照查詢工具到 MCP Server
@@ -12,10 +12,13 @@ export function registerQuotesTools(
   server: McpServer,
   stock: StockClientInterface
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'quotes', '取得股票行情快照（依市場別）');
+  
   // 取得股票行情快照工具
   server.tool(
     "get_stock_snapshot_quotes",
-    "取得股票行情快照（依市場別）",
+    description,
     {
       market: z
         .enum(["TSE", "OTC", "ESB", "TIB", "PSB"])
@@ -35,8 +38,10 @@ export function registerQuotesTools(
         .optional()
         .describe("限制回傳筆數，預設 30 筆，最多 50 筆"),
     },
-    async ({ market, type, limit = 30 }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'quotes',
+      async ({ market, type, limit = 30 }) => {
         // 透過API獲取股票行情快照
         const data = await stock.snapshot.quotes({
           market,
@@ -44,31 +49,11 @@ export function registerQuotesTools(
         });
 
         data.data = data.data.slice(0, limit);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(
-          data,
-          null,
-          2
-        )}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(
-          quotesReference,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢股票行情快照時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return data;
+      },
+      {
+        errorMessage: "查詢股票行情快照時發生錯誤"
       }
-    }
+    )
   );
 }

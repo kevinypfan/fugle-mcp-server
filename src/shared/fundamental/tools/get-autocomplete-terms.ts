@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { FugleApiProvider } from "../providers";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
+import path from "path";
 
 /**
  * 註冊股票搜尋自動完成工具到 MCP Server
@@ -11,35 +13,25 @@ export function registerAutocompleteTool(
   server: McpServer,
   provider: FugleApiProvider
 ) {
-  // 取得股票搜尋自動完成工具
+  const currentDir = path.join(__dirname, '..');
+  const { description } = loadToolMetadata(currentDir, 'get-autocomplete-terms', '根據部分輸入獲取股票搜尋自動完成結果');
+  
   server.tool(
     "get_autocomplete_terms",
-    "根據部分輸入獲取股票搜尋自動完成結果",
+    description,
     {
       terms: z.string().describe("搜尋關鍵字"),
     },
-    async ({ terms }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-autocomplete-terms',
+      async ({ terms }) => {
         const data = await provider.getAutocompleteTerms(terms);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify({ data }),
-            },
-          ],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return { data };
+      },
+      {
+        errorMessage: "查詢時發生錯誤",
       }
-    }
+    )
   );
 }

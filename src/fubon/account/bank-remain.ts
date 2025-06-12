@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import bankRemainReference from "./references/bank-remain.json";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
   
 /**
  * 註冊銀行餘額查詢工具到 MCP Server
@@ -14,34 +14,26 @@ export function registerBankBalanceTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'bank-remain', '查詢銀行餘額資訊');
+  
   // 分戶帳銀行餘額查詢工具
   server.tool(
     "get_bank_remain",
-    "查詢銀行餘額資訊",
+    description,
     {
       // 這裡不需要額外參數，因為已經傳入帳戶資訊
     },
-    async () => {
-      try {
+    createToolHandler(
+      currentDir,
+      'bank-remain',
+      async () => {
         // 透過SDK獲取分戶帳銀行餘額資訊
-        const data = await sdk.accounting.bankRemain(account);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(bankRemainReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `銀行餘額查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.accounting.bankRemain(account);
+      },
+      {
+        errorMessage: "銀行餘額查詢時發生錯誤"
       }
-    }
+    )
   );
 }

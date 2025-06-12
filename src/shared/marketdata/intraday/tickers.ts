@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StockClientInterface } from "../types";
 import { z } from "zod";
-import tickersReference from "./references/tickers.json";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
 import industryTypeReference from "./references/industry-type.json";
 
 /**
@@ -10,10 +10,13 @@ import industryTypeReference from "./references/industry-type.json";
  * @param {StockClientInterface} stock 股票 API 客戶端
  */
 export function registerTickersTools(server: McpServer, stock: StockClientInterface) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'tickers', '取得股票列表（依條件查詢）');
+  
   // 取得股票列表工具
   server.tool(
     "get_stock_intraday_tickers",
-    "取得股票列表（依條件查詢）",
+    description,
     {
       type: z
         .literal("oddlot")
@@ -44,18 +47,20 @@ export function registerTickersTools(server: McpServer, stock: StockClientInterf
         .optional()
         .describe("是否為暫停交易股票"),
     },
-    async ({
-      type,
-      market,
-      industry,
-      isNormal,
-      isAttention,
-      isDisposition,
-      isHalted,
-    }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'tickers',
+      async ({
+        type,
+        market,
+        industry,
+        isNormal,
+        isAttention,
+        isDisposition,
+        isHalted,
+      }) => {
         // 透過API獲取股票列表
-        const data = await stock.intraday.tickers({
+        return await stock.intraday.tickers({
           type: type === "oddlot" ? "oddlot" : "EQUITY", // 設定預設值為 "EQUITY"
           market,
           industry,
@@ -64,23 +69,18 @@ export function registerTickersTools(server: McpServer, stock: StockClientInterf
           isDisposition,
           isHalted,
         });
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(tickersReference, null, 2)}\n\`\`\`\n\nIndustry Type Codes\n\`\`\`json\n${JSON.stringify(industryTypeReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢股票列表時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+      },
+      {
+        errorMessage: "查詢股票列表時發生錯誤",
+        customFormatter: (result, reference) => {
+          let response = `API Response\n\`\`\`json\n${JSON.stringify(result, null, 2)}\n\`\`\``;
+          if (reference) {
+            response += `\n\nField Description\n\`\`\`json\n${JSON.stringify(reference, null, 2)}\n\`\`\``;
+          }
+          response += `\n\nIndustry Type Codes\n\`\`\`json\n${JSON.stringify(industryTypeReference, null, 2)}\n\`\`\``;
+          return response;
+        }
       }
-    }
+    )
   );
 }

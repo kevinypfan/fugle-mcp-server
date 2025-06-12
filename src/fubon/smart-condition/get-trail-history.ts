@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
-import { loadToolDescription } from "./utils.js";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * Register get trail history tool to MCP Server
@@ -12,42 +12,30 @@ export function registerGetTrailHistoryTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'get-trail-history', '查詢追蹤停利歷史');
+
   server.tool(
     "get_trail_history",
-    loadToolDescription('get-trail-history', '查詢追蹤停利歷史'),
+    description,
     {
       start_date: z.string().describe("查詢開始日期 (YYYYMMDD)"),
       end_date: z.string().describe("查詢結束日期 (YYYYMMDD)"),
     },
-    async ({ start_date, end_date }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-trail-history',
+      async ({ start_date, end_date }) => {
         // Call SDK API
-        const result = await sdk.stock.getTrailHistory(
+        return await sdk.stock.getTrailHistory(
           account,
           start_date,
           end_date
         );
-
-        const response = `追蹤停利歷史紀錄查詢結果\n\`\`\`json\n${JSON.stringify(
-          result,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢追蹤停利歷史紀錄時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+      },
+      {
+        errorMessage: "查詢追蹤停利歷史紀錄時發生錯誤"
       }
-    }
+    )
   );
 }

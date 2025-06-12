@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StockClientInterface } from "../types";
 import { z } from "zod";
-import volumesReference from "./references/volumes.json";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
 
 /**
  * 註冊股票分價量表查詢工具到 MCP Server
@@ -9,10 +9,13 @@ import volumesReference from "./references/volumes.json";
  * @param {StockClientInterface} stock 股票 API 客戶端
  */
 export function registerVolumesTools(server: McpServer, stock: StockClientInterface) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'volumes', '取得股票分價量表（依代碼查詢）');
+  
   // 取得股票分價量表工具
   server.tool(
     "get_stock_intraday_volumes",
-    "取得股票分價量表（依代碼查詢）",
+    description,
     {
       symbol: z.string().describe("股票代碼，例如：2330"),
       type: z
@@ -20,30 +23,19 @@ export function registerVolumesTools(server: McpServer, stock: StockClientInterf
         .optional()
         .describe("Ticker 類型，可選 oddlot 盤中零股"),
     },
-    async ({ symbol, type }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'volumes',
+      async ({ symbol, type }) => {
         // 透過API獲取股票分價量表
-        const data = await stock.intraday.volumes({
+        return await stock.intraday.volumes({
           symbol,
           type: type === "oddlot" ? "oddlot" : undefined,
         });
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(volumesReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢股票 ${symbol} 分價量表時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+      },
+      {
+        errorMessage: "查詢股票分價量表時發生錯誤"
       }
-    }
+    )
   );
 }

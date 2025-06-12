@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
 import { PriceType } from "masterlink-sdk";
-import modifyPriceReference from "./references/modify-price.json";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * 註冊修改委託單相關的工具到 MCP Server
@@ -15,10 +15,13 @@ export function registerModifyOrderTools(
   sdk: MasterlinkSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'modify-price', '修改委託價格');
+  
   // 修改委託價格工具
   server.tool(
     "modify_price",
-    "修改委託價格",
+    description,
     {
       orderNo: z.string().optional().describe("委託書號，例如：f0002"),
       preOrderNo: z.string().optional().describe("委託書號，例如：f0002"),
@@ -34,8 +37,10 @@ export function registerModifyOrderTools(
           "價格類型：Limit 限價、Market 市價、LimitUp 漲停、LimitDown 跌停、Reference 平盤價"
         ),
     },
-    async ({ orderNo, preOrderNo, isPreOrder, price, priceType }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'modify-price',
+      async ({ orderNo, preOrderNo, isPreOrder, price, priceType }) => {
         if (process.env.ENABLE_ORDER !== "true") {
           throw new Error(
             "修改委託價格功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )"
@@ -52,64 +57,29 @@ export function registerModifyOrderTools(
         });
 
         if (!targetOrder) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: isPreOrder
-                  ? `修改委託單數量失敗：找不到預約委託書號 ${preOrderNo} 的委託單`
-                  : `修改委託單數量失敗：找不到委託書號 ${orderNo} 的委託單`,
-              },
-            ],
-            isError: true,
-          };
+          throw new Error(
+            isPreOrder
+              ? `修改委託單數量失敗：找不到預約委託書號 ${preOrderNo} 的委託單`
+              : `修改委託單數量失敗：找不到委託書號 ${orderNo} 的委託單`
+          );
         }
 
         // 檢查委託單狀態
         if (!targetOrder.canCancel) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: `修改委託價格失敗：委託單不可修改`,
-              },
-            ],
-            isError: true,
-          };
+          throw new Error(`修改委託價格失敗：委託單不可修改`);
         }
 
         // 修改委託價格
-        const data = await sdk.stock.modifyPrice(
+        return await sdk.stock.modifyPrice(
           account,
           targetOrder,
           price || "",
           priceType as PriceType
         );
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(
-          data,
-          null,
-          2
-        )}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(
-          modifyPriceReference,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `修改委託價格時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+      },
+      {
+        errorMessage: "修改委託價格時發生錯誤"
       }
-    }
+    )
   );
 }

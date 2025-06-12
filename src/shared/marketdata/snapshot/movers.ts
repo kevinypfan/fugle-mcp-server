@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StockClientInterface } from "../types";
 import { z } from "zod";
-import moversReference from "./references/movers.json";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
 
 /**
  * 註冊股票漲跌幅排行查詢工具到 MCP Server
@@ -9,10 +9,13 @@ import moversReference from "./references/movers.json";
  * @param {StockClientInterface} stock 股票 API 客戶端
  */
 export function registerMoversTools(server: McpServer, stock: StockClientInterface) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'movers', '取得股票漲跌幅排行（依市場別）');
+  
   // 取得股票漲跌幅排行工具
   server.tool(
     "get_stock_snapshot_movers",
-    "取得股票漲跌幅排行（依市場別）",
+    description,
     {
       market: z
         .enum(["TSE", "OTC", "ESB", "TIB", "PSB"])
@@ -41,19 +44,21 @@ export function registerMoversTools(server: McpServer, stock: StockClientInterfa
         .optional()
         .describe("限制回傳筆數，預設 30 筆，最多 50 筆"),
     },
-    async ({
-      market,
-      direction,
-      change,
-      gt,
-      type,
-      gte,
-      lt,
-      lte,
-      eq,
-      limit = 30,
-    }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'movers',
+      async ({
+        market,
+        direction,
+        change,
+        gt,
+        type,
+        gte,
+        lt,
+        lte,
+        eq,
+        limit = 30,
+      }) => {
         // 透過API獲取股票漲跌幅排行
         const data = await stock.snapshot.movers({
           market,
@@ -68,23 +73,11 @@ export function registerMoversTools(server: McpServer, stock: StockClientInterfa
         });
 
         data.data = data.data.slice(0, limit);
-        
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(moversReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢股票漲跌幅排行時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return data;
+      },
+      {
+        errorMessage: "查詢股票漲跌幅排行時發生錯誤"
       }
-    }
+    )
   );
 }

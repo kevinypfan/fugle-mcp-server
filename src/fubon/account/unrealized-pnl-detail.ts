@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import unrealizedPnLDetailReference from "./references/unrealized-pnl-detail.json";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * 註冊未實現損益查詢工具到 MCP Server
@@ -14,34 +14,26 @@ export function registerUnrealizedPnLDetailTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'unrealized-pnl-detail', '查詢未實現損益資訊');
+  
   // 未實現損益查詢工具
   server.tool(
     "get_unrealized_pnl_detail",
-    "查詢未實現損益資訊",
+    description,
     {
       // 這裡不需要額外參數，因為已經傳入帳戶資訊
     },
-    async () => {
-      try {
+    createToolHandler(
+      currentDir,
+      'unrealized-pnl-detail',
+      async () => {
         // 透過SDK獲取未實現損益資訊
-        const data = await sdk.accounting.unrealizedGainsAndLoses(account);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(unrealizedPnLDetailReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `未實現損益查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.accounting.unrealizedGainsAndLoses(account);
+      },
+      {
+        errorMessage: "未實現損益查詢時發生錯誤"
       }
-    }
+    )
   );
 }

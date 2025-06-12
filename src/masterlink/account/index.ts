@@ -24,17 +24,17 @@ export {
 };
 
 // 定義一個函數來註冊所有帳戶管理工具
-export const registerAllAccountTools = (
+export const registerAllAccountTools = async (
   server: McpServer,
   sdk: MasterlinkSDK,
   account: Account
 ) => {
-  registerBankBalanceTools(server, sdk, account);
-  registerInventoriesTools(server, sdk, account);
-  registerRealizedProfitAndLossesTools(server, sdk, account);
-  registerSkbankBalanceTools(server, sdk, account);
-  registerAccountStatementTools(server, sdk, account);
-  registerTodayTradeSummaryTools(server, sdk, account);
-  registerTodaySettlementTools(server, sdk, account);
-  registerTotalPnlTools(server, sdk, account);
+  await registerBankBalanceTools(server, sdk, account);
+  await registerInventoriesTools(server, sdk, account);
+  await registerRealizedProfitAndLossesTools(server, sdk, account);
+  await registerSkbankBalanceTools(server, sdk, account);
+  await registerAccountStatementTools(server, sdk, account);
+  await registerTodayTradeSummaryTools(server, sdk, account);
+  await registerTodaySettlementTools(server, sdk, account);
+  await registerTotalPnlTools(server, sdk, account);
 };

@@ -6,7 +6,7 @@ import {
   ConditionOrder
 } from "fubon-neo/trade";
 import { z } from "zod";
-import { loadToolDescription } from "./utils.js";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * Register multi condition order tool to MCP Server
@@ -16,9 +16,12 @@ export function registerMultiConditionTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'multi-condition', '建立多重條件單');
+
   server.tool(
     "multi_condition_order",
-    loadToolDescription('multi-condition', '建立多重條件單'),
+    description,
     {
       start_date: z.string().describe("監控開始日期 (YYYYMMDD)"),
       end_date: z.string().describe("監控結束日期 (YYYYMMDD)"),
@@ -72,8 +75,10 @@ export function registerMultiConditionTool(
       sl_order_type: z.enum(["Stock", "Margin", "Short"]).optional().describe("停損委託類型（選填）：Stock=現股, Margin=融資, Short=融券"),
       sl_trigger: z.enum(["BidPrice", "AskPrice", "MatchedPrice"]).optional().describe("停損觸發條件（選填）：BidPrice=買價, AskPrice=賣價, MatchedPrice=成交價"),
     },
-    async (params) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'multi-condition',
+      async (params) => {
         if (process.env.ENABLE_ORDER !== "true") {
           throw new Error(
             "條件單功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )"
@@ -146,7 +151,7 @@ export function registerMultiConditionTool(
         }
 
         // Call SDK API
-        const result = await sdk.stock.multiCondition(
+        return await sdk.stock.multiCondition(
           account,
           params.start_date,
           params.end_date,
@@ -155,27 +160,10 @@ export function registerMultiConditionTool(
           order,
           tpsl
         );
-
-        const response = `多重條件單建立結果\n\`\`\`json\n${JSON.stringify(
-          result,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `建立多重條件單時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+      },
+      {
+        errorMessage: "建立多重條件單時發生錯誤"
       }
-    }
+    )
   );
 }

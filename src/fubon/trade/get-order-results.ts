@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import getOrderResultsReference from "./references/get-order-results.json";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
   
 /**
  * 註冊查詢委託結果工具到 MCP Server
@@ -14,33 +14,25 @@ export function registerGetOrderResultsTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'get-order-results', '查詢未成交委託單');
+  
   server.tool(
     "get_order_results",
-    "查詢未成交委託單",
+    description,
     {
       // 這裡不需要額外參數，根據錯誤信息，getOrderResults 方法可能只接受一個參數
     },
-    async () => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-order-results',
+      async () => {
         // 透過SDK查詢未成交委託單
-        const data = await sdk.stock.getOrderResults(account);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(getOrderResultsReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢未成交委託單時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.getOrderResults(account);
+      },
+      {
+        errorMessage: "查詢未成交委託單時發生錯誤"
       }
-    }
+    )
   );
 }

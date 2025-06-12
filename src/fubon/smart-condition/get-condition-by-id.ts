@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
-import { loadToolDescription } from "./utils.js";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * Register get condition by ID tool to MCP Server
@@ -12,37 +12,25 @@ export function registerGetConditionByIdTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'get-condition-by-id', '查詢條件單資訊');
+
   server.tool(
     "get_condition_by_id",
-    loadToolDescription('get-condition-by-id', '查詢條件單資訊'),
+    description,
     {
       guid: z.string().describe("條件單 GUID 識別碼"),
     },
-    async ({ guid }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-condition-by-id',
+      async ({ guid }) => {
         // Call SDK API
-        const result = await sdk.stock.getConditionOrderById(account, guid);
-
-        const response = `條件單查詢結果\n\`\`\`json\n${JSON.stringify(
-          result,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢條件單時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.getConditionOrderById(account, guid);
+      },
+      {
+        errorMessage: "查詢條件單時發生錯誤"
       }
-    }
+    )
   );
 }

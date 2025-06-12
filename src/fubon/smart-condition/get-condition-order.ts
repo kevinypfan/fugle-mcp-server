@@ -3,7 +3,7 @@ import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
 import { ConditionStatus } from "./types.js";
-import { loadToolDescription } from "./utils.js";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * Register get condition order tool to MCP Server
@@ -13,9 +13,12 @@ export function registerGetConditionOrderTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'get-condition-order', '查詢條件單委託');
+
   server.tool(
     "get_condition_order",
-    loadToolDescription('get-condition-order', '查詢條件單委託'),
+    description,
     {
       condition_status: z.enum([
         "Type1", "Type2", "Type3", "Type4", "Type5", "Type6", 
@@ -24,34 +27,19 @@ export function registerGetConditionOrderTool(
         "條件狀態篩選（選填）：Type1=今日相關查詢, Type2=尚有效單, Type3=條件比對中, Type4=委託處理中, Type5=委託成功, Type6=已通知, Type7=委託失敗, Type8=已有成交, Type9=刪除成功, Type10=異常, Type11=失效"
       ),
     },
-    async ({ condition_status }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-condition-order',
+      async ({ condition_status }) => {
         // Call SDK API
-        const result = await sdk.stock.getConditionOrder(
+        return await sdk.stock.getConditionOrder(
           account, 
           condition_status as any
         );
-
-        const response = `條件單委託查詢結果\n\`\`\`json\n${JSON.stringify(
-          result,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢條件單委託時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+      },
+      {
+        errorMessage: "查詢條件單委託時發生錯誤"
       }
-    }
+    )
   );
 }

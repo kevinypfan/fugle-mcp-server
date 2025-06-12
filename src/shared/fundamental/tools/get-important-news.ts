@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { FugleApiProvider } from "../providers";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
+import path from "path";
 
 /**
  * 註冊股票重大訊息查詢工具到 MCP Server
@@ -11,35 +13,25 @@ export function registerImportantNewsTool(
   server: McpServer,
   provider: FugleApiProvider
 ) {
-  // 取得股票重大訊息工具
+  const currentDir = path.join(__dirname, '..');
+  const { description } = loadToolMetadata(currentDir, 'get-important-news', '獲取股票重大訊息');
+  
   server.tool(
     "get_important_news",
-    "獲取股票重大訊息",
+    description,
     {
       symbolId: z.string().describe("股票代碼"),
     },
-    async ({ symbolId }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-important-news',
+      async ({ symbolId }) => {
         const data = await provider.getImportantNews(symbolId);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify({ data }),
-            },
-          ],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return { data };
+      },
+      {
+        errorMessage: "查詢時發生錯誤",
       }
-    }
+    )
   );
 }

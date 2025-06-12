@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { FugleApiProvider } from "../providers";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
+import path from "path";
 
 /**
  * 註冊公司基本資料查詢工具到 MCP Server
@@ -11,35 +13,25 @@ export function registerCompanyProfileTool(
   server: McpServer,
   provider: FugleApiProvider
 ) {
-  // 取得公司基本資料工具
+  const currentDir = path.join(__dirname, '..');
+  const { description } = loadToolMetadata(currentDir, 'get-company-profile', '獲取公司基本資料');
+  
   server.tool(
     "get_company_profile",
-    "獲取公司基本資料",
+    description,
     {
       symbolId: z.string().describe("股票代碼"),
     },
-    async ({ symbolId }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-company-profile',
+      async ({ symbolId }) => {
         const data = await provider.getCompanyProfile(symbolId);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify({ data }),
-            },
-          ],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return { data };
+      },
+      {
+        errorMessage: "查詢時發生錯誤",
       }
-    }
+    )
   );
 }
