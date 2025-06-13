@@ -15,6 +15,7 @@ import { registerModifyOrderTools } from "./modify-price";
 import { registerModifyVolumeTools } from "./modify-volume";
 import { registerOrderResultTools } from "./order-results";
 import { registerPlaceOrderTools } from "./place-order";
+import { registerApiAuthTools } from "./register-api-auth";
 
 // 確保匯出
 export {
@@ -31,6 +32,7 @@ export {
   registerModifyVolumeTools,
   registerOrderResultTools,
   registerPlaceOrderTools,
+  registerApiAuthTools,
 };
 
 // 定義一個函數來註冊所有交易工具
@@ -52,4 +54,5 @@ export const registerAllTradeTools = (
   registerModifyVolumeTools(server, sdk, account);
   registerOrderResultTools(server, sdk, account);
   registerPlaceOrderTools(server, sdk, account);
+  registerApiAuthTools(server, sdk, account);
 };

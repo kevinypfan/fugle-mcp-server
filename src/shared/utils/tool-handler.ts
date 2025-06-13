@@ -27,9 +27,7 @@ export function createToolHandler<TParams, TResult>(
   
   return async (params: TParams): Promise<any> => {
     try {
-      console.debug(`Executing tool ${filename} with params:`, params);
       const result = await apiCall(params);
-      console.debug(`Tool ${filename} executed successfully:`, result);
       
       const response = options?.customFormatter 
         ? options.customFormatter(result, reference)
