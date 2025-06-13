@@ -31,7 +31,7 @@ export function registerPlaceOrderTool(
     {
       buySell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買, Sell = 賣"),
       symbol: z.string().describe("股票代號，例如：2330"),
-      price: z.string().describe("委託價格"),
+      price: z.string().optional().describe("委託價格"),
       quantity: z.number().describe("委託數量"),
       marketType: z
         .enum(["Common", "Fixing", "IntradayOdd", "Odd", "Emg", "EmgOdd"])

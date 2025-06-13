@@ -44,7 +44,7 @@ export function registerSingleConditionTool(
       // Order object
       order_buy_sell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買, Sell = 賣"),
       order_symbol: z.string().describe("委託股票代號"),
-      order_price: z.number().describe("委託價格"),
+      order_price: z.string().optional().describe("委託價格"),
       order_quantity: z.number().describe("委託數量"),
       order_market_type: z.enum(["Common", "Fixing", "IntradayOdd", "Odd"]).describe(
         "市場類型：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股"

@@ -37,7 +37,7 @@ export function registerMultiConditionTool(
       // Order object
       order_buy_sell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買, Sell = 賣"),
       order_symbol: z.string().describe("委託股票代號"),
-      order_price: z.number().describe("委託價格"),
+      order_price: z.string().optional().describe("委託價格"),
       order_quantity: z.number().describe("委託數量"),
       order_market_type: z.enum(["Common", "Fixing", "IntradayOdd", "Odd"]).describe(
         "市場類型：Common = 整股, Fixing = 定盤, IntradayOdd = 盤中零股, Odd = 盤後零股"
@@ -108,7 +108,7 @@ export function registerMultiConditionTool(
         const order: any = {
           buySell: params.order_buy_sell as any,
           symbol: params.order_symbol,
-          price: String(params.order_price),
+          price: params.order_price ? String(params.order_price) : undefined,
           quantity: params.order_quantity,
           marketType: params.order_market_type as any,
           priceType: params.order_price_type as any,
@@ -129,7 +129,7 @@ export function registerMultiConditionTool(
           if (params.tp_target_price) {
             tpsl.tp = {
               targetPrice: String(params.tp_target_price),
-              price: params.tp_price ? String(params.tp_price) : "",
+              price: params.tp_price ? String(params.tp_price) : undefined,
               priceType: params.tp_price_type! as any,
               timeInForce: params.tp_time_in_force! as any,
               orderType: params.tp_order_type! as any,
@@ -141,7 +141,7 @@ export function registerMultiConditionTool(
           if (params.sl_target_price) {
             tpsl.sl = {
               targetPrice: String(params.sl_target_price),
-              price: params.sl_price ? String(params.sl_price) : "",
+              price: params.sl_price ? String(params.sl_price) : undefined,
               priceType: params.sl_price_type! as any,
               timeInForce: params.sl_time_in_force! as any,
               orderType: params.sl_order_type! as any,
