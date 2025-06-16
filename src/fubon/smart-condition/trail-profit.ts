@@ -30,7 +30,7 @@ export function registerTrailProfitTool(
       trail_symbol: z.string().describe("追蹤股票代號"),
       trail_price: z.number().describe("基準價格（只可輸入至多小數點後兩位，若超出將造成系統洗價失敗）"),
       trail_direction: z.enum(["Up", "Down"]).describe(
-        "追蹤方向：Up = 向上追蹤（股價上漲時調高基準價，下跌時保持基準價不變）, Down = 向下追蹤（股價下跌時調低基準價，上漲時保持基準價不變）"
+        "追蹤方向：Up = 向上追蹤（下跌時，追蹤價追蹤下跌，通常為空單使用）, Down = 向下追蹤（上漲時，追蹤價追蹤上漲，通常為多單使用）"
       ),
       trail_percentage: z.number().describe("追蹤百分比閾值（整數，例如：5 代表 5%）- 當股價觸及以基準價計算的漲跌百分比時觸發下單"),
       trail_buysell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買進, Sell = 賣出"),
