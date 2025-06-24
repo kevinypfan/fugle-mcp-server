@@ -2,7 +2,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
 import { QueryType } from "masterlink-sdk";
-import orderResultsReference from "./references/get-order-results.json";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * 註冊查詢委託單相關的工具到 MCP Server
@@ -15,10 +15,13 @@ export function registerOrderResultTools(
   sdk: MasterlinkSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'order-results', '查詢委託單結果');
+  
   // 取得委託單結果工具
   server.tool(
     "get_order_results",
-    "查詢委託單結果",
+    description,
     {
       queryType: z
         .enum(["All", "Reservation", "RegularSession", "Cancelable", "Failed"])
@@ -28,8 +31,10 @@ export function registerOrderResultTools(
         .default("All")
         .optional(),
     },
-    async ({ queryType }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'order-results',
+      async ({ queryType }) => {
         // 處理 enum 轉換
         let queryTypeValue: QueryType;
 
@@ -59,24 +64,11 @@ export function registerOrderResultTools(
         }
 
         // 呼叫 SDK 獲取委託單結果
-        const data = await sdk.stock.getOrderResults(account, queryTypeValue);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(orderResultsReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢委託單結果時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.getOrderResults(account, queryTypeValue);
+      },
+      {
+        errorMessage: "查詢委託單結果時發生錯誤"
       }
-    }
+    )
   );
 }

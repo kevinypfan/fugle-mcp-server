@@ -1,0 +1,49 @@
+{
+  "description": "自動完成搜尋建議 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.terms": {
+      "type": "array",
+      "description": "搜尋建議清單"
+    },
+    "data.terms[].normalName": {
+      "type": "string",
+      "description": "正規化的股票代號或名稱"
+    },
+    "data.terms[].normal_name": {
+      "type": "string",
+      "description": "正規化的股票代號或名稱（別名）"
+    },
+    "data.terms[].info": {
+      "type": "object",
+      "description": "股票基本資訊"
+    },
+    "data.terms[].info.name": {
+      "type": "string",
+      "description": "公司中文名稱"
+    },
+    "data.terms[].info.symbol_id": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.terms[].info.category": {
+      "type": "string",
+      "description": "商品類別（如：stock）"
+    },
+    "data.terms[].info.country": {
+      "type": "string",
+      "description": "國家代碼（tw=台灣）"
+    },
+    "data.terms[].info.exchange": {
+      "type": "string",
+      "description": "交易所代碼（twse=台灣證券交易所，tpex=櫃買中心）"
+    },
+    "data.terms[].info.mkt": {
+      "type": "string",
+      "description": "市場類別（sem=股票市場）"
+    }
+  }
+}

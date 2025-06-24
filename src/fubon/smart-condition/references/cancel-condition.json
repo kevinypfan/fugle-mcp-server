@@ -1,0 +1,29 @@
+{
+  "description": "取消條件單 API 回傳格式",
+  "fields": {
+    "is_success": {
+      "type": "boolean",
+      "description": "API 執行成功狀態"
+    },
+    "message": {
+      "type": "string",
+      "description": "執行結果訊息或錯誤訊息"
+    },
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.guid": {
+      "type": "string",
+      "description": "被取消的條件單唯一識別碼"
+    },
+    "data.status": {
+      "type": "string",
+      "description": "取消後的條件單狀態"
+    },
+    "data.cancel_time": {
+      "type": "string",
+      "description": "取消時間"
+    }
+  }
+}

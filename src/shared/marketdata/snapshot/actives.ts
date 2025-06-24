@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StockClientInterface } from "../types";
 import { z } from "zod";
-import activesReference from "./references/actives.json";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
 
 /**
  * 註冊股票成交量值排行查詢工具到 MCP Server
@@ -9,10 +9,13 @@ import activesReference from "./references/actives.json";
  * @param {StockClientInterface} stock 股票 API 客戶端
  */
 export function registerActivesTools(server: McpServer, stock: StockClientInterface) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'actives', '取得股票成交量值排行（依市場別）');
+  
   // 取得股票成交量值排行工具
   server.tool(
     "get_stock_snapshot_actives",
-    "取得股票成交量值排行（依市場別）",
+    description,
     {
       market: z
         .enum(["TSE", "OTC", "ESB", "TIB", "PSB"])
@@ -35,8 +38,10 @@ export function registerActivesTools(server: McpServer, stock: StockClientInterf
         .optional()
         .describe("限制回傳筆數，預設 30 筆，最多 50 筆"),
     },
-    async ({ market, trade, type, limit = 30 }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'actives',
+      async ({ market, trade, type, limit = 30 }) => {
         // 透過API獲取股票成交量值排行
         const data = await stock.snapshot.actives({
           market,
@@ -45,23 +50,11 @@ export function registerActivesTools(server: McpServer, stock: StockClientInterf
         });
 
         data.data = data.data.slice(0, limit);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(activesReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢股票成交量值排行時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return data;
+      },
+      {
+        errorMessage: "查詢股票成交量值排行時發生錯誤"
       }
-    }
+    )
   );
 }

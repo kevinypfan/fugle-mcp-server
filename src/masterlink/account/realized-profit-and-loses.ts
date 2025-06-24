@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { Account, BSAction, MasterlinkSDK } from "masterlink-sdk";
+import { Account, MasterlinkSDK } from "masterlink-sdk";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 import { z } from "zod";
-import realizedPNLReference from "./references/realized-pnl-detail.json";
 
 /**
  * 註冊已實現損益查詢工具到 MCP Server
@@ -14,10 +14,12 @@ export function registerRealizedProfitAndLossesTools(
   sdk: MasterlinkSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'realized-pnl-detail', '查詢已實現損益詳細資訊');
   // 已實現損益查詢工具
   server.tool(
     "get_account_realized_profit_and_losses",
-    "查詢指定期間內的已實現損益",
+    description,
     {
       start_date: z
         .string()
@@ -26,32 +28,18 @@ export function registerRealizedProfitAndLossesTools(
         .string()
         .describe("查詢結束日期，格式為YYYYMMDD，例如：20240131"),
     },
-    async ({ start_date, end_date }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'realized-pnl-detail',
+      async ({ start_date, end_date }) => {
         // 檢查日期格式是否正確
         if (!/^\d{8}$/.test(start_date) || !/^\d{8}$/.test(end_date)) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: "日期格式錯誤！請使用YYYYMMDD格式，例如：20240101",
-              },
-            ],
-            isError: true,
-          };
+          throw new Error("日期格式錯誤！請使用YYYYMMDD格式，例如：20240101");
         }
 
         // 檢查結束日期是否早於起始日期
         if (parseInt(end_date) < parseInt(start_date)) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: "查詢結束日期不能早於起始日期！",
-              },
-            ],
-            isError: true,
-          };
+          throw new Error("查詢結束日期不能早於起始日期！");
         }
 
         // 透過SDK獲取已實現損益資訊
@@ -60,23 +48,11 @@ export function registerRealizedProfitAndLossesTools(
           start_date,
           end_date
         );
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(realizedPNLReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢已實現損益資訊時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return data;
+      },
+      {
+        errorMessage: "查詢已實現損益時發生錯誤"
       }
-    }
+    )
   );
 }

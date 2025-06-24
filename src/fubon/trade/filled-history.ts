@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import filledHistoryReference from "./references/filled-history.json";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
   
 /**
  * 註冊成交單歷史查詢工具到 MCP Server
@@ -15,36 +15,28 @@ export function registerFilledHistoryTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'filled-history', '查詢成交單歷史紀錄');
+  
   server.tool(
     "get_filled_history",
-    "查詢成交單歷史紀錄",
+    description,
     {
       date: z.string().optional().describe("查詢日期 (格式: YYYY/MM/DD)，不指定則為今日"),
       symbol: z.string().optional().describe("股票代號，不指定則查詢全部")
     },
-    async ({ date, symbol }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'filled-history',
+      async ({ date, symbol }) => {
         // 透過SDK查詢成交單歷史
         // 確保date不是undefined
         const startDate = date || new Date().toLocaleDateString();
-        const data = await sdk.stock.filledHistory(account, startDate, symbol || undefined);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(filledHistoryReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢成交單歷史時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.filledHistory(account, startDate, symbol || undefined);
+      },
+      {
+        errorMessage: "查詢成交單歷史時發生錯誤"
       }
-    }
+    )
   );
 }

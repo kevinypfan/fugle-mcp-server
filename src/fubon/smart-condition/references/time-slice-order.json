@@ -1,0 +1,49 @@
+{
+  "description": "時間切片委託 API 回傳格式",
+  "fields": {
+    "is_success": {
+      "type": "boolean",
+      "description": "API 執行成功狀態"
+    },
+    "message": {
+      "type": "string",
+      "description": "錯誤訊息（當 is_success 為 false 時）"
+    },
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.batch_no": {
+      "type": "string",
+      "description": "切片批次號碼"
+    },
+    "data.account": {
+      "type": "string",
+      "description": "交易帳號"
+    },
+    "data.status": {
+      "type": "string",
+      "description": "切片委託狀態"
+    },
+    "data.symbol": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.total_quantity": {
+      "type": "number",
+      "description": "總委託數量"
+    },
+    "data.slice_count": {
+      "type": "number",
+      "description": "切片總數"
+    },
+    "data.create_time": {
+      "type": "string",
+      "description": "建立時間"
+    },
+    "data.split_config": {
+      "type": "object",
+      "description": "切片設定"
+    }
+  }
+}

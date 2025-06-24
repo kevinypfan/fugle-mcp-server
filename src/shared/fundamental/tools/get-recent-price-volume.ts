@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { FugleApiProvider } from "../providers";
+import { loadToolMetadata, createToolHandler } from "../../utils/index.js";
+import path from "path";
 
 /**
  * 註冊股票漲跌幅排行查詢工具到 MCP Server
@@ -11,35 +13,25 @@ export function registerRecentPriceVolumeTool(
   server: McpServer,
   provider: FugleApiProvider
 ) {
-  // 取得股票漲跌幅排行工具
+  const currentDir = path.join(__dirname, '..');
+  const { description } = loadToolMetadata(currentDir, 'get-recent-price-volume', '獲取股票近3日價量數據');
+  
   server.tool(
     "get_recent_price_volume",
-    "獲取股票近3日價量數據",
+    description,
     {
       symbolId: z.string().describe("股票代碼"),
     },
-    async ({ symbolId }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-recent-price-volume',
+      async ({ symbolId }) => {
         const data = await provider.getRecentPriceVolume(symbolId);
-        return {
-          content: [
-            {
-              type: "text",
-              text: JSON.stringify({ data }),
-            },
-          ],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return { data };
+      },
+      {
+        errorMessage: "查詢時發生錯誤",
       }
-    }
+    )
   );
 }

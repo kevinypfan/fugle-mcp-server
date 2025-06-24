@@ -1,0 +1,126 @@
+{
+  "data": {
+    "terms": [
+      {
+        "normalName": "2348A",
+        "info": {
+          "name": "海悅甲特",
+          "symbol_id": "2348A",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2348A"
+      },
+      {
+        "normalName": "2330",
+        "info": {
+          "name": "台積電",
+          "symbol_id": "2330",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2330"
+      },
+      {
+        "normalName": "2317",
+        "info": {
+          "name": "鴻海",
+          "symbol_id": "2317",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2317"
+      },
+      {
+        "normalName": "2303",
+        "info": {
+          "name": "聯電",
+          "symbol_id": "2303",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2303"
+      },
+      {
+        "normalName": "2344",
+        "info": {
+          "name": "華邦電",
+          "symbol_id": "2344",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2344"
+      },
+      {
+        "normalName": "2376",
+        "info": {
+          "name": "技嘉",
+          "symbol_id": "2376",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2376"
+      },
+      {
+        "normalName": "2308",
+        "info": {
+          "name": "台達電",
+          "symbol_id": "2308",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2308"
+      },
+      {
+        "normalName": "2368",
+        "info": {
+          "name": "金像電",
+          "symbol_id": "2368",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2368"
+      },
+      {
+        "normalName": "2337",
+        "info": {
+          "name": "旺宏",
+          "symbol_id": "2337",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2337"
+      },
+      {
+        "normalName": "2382",
+        "info": {
+          "name": "廣達",
+          "symbol_id": "2382",
+          "category": "stock",
+          "country": "tw",
+          "exchange": "twse",
+          "mkt": "sem"
+        },
+        "normal_name": "2382"
+      }
+    ]
+  }
+}

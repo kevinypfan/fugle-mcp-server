@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { Account, MasterlinkSDK } from "masterlink-sdk";
 import { z } from "zod";
-import filledHistoryDetailReference from "./references/filled-history-detail.json";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * 註冊查詢歷史成交明細相關的工具到 MCP Server
@@ -14,10 +14,13 @@ export function registerFilledHistoryDetailTools(
   sdk: MasterlinkSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'get-filled-history-detail', '查詢歷史成交明細');
+  
   // 查詢歷史成交明細工具
   server.tool(
     "filled_history_detail",
-    "查詢歷史成交明細",
+    description,
     {
       startDate: z
         .string()
@@ -26,41 +29,17 @@ export function registerFilledHistoryDetailTools(
         .string()
         .describe("查詢結束日期 (YYYYMMDD 格式)"),
     },
-    async ({ startDate, endDate }, extra) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'get-filled-history-detail',
+      async ({ startDate, endDate }) => {
         // 呼叫 SDK 獲取歷史成交明細資訊
-        const data = await sdk.stock.filledDetailHistory(account, startDate, endDate);
-
-        // 檢查是否有查詢結果
-        if (!data || (Array.isArray(data) && data.length === 0)) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: `查詢期間 ${formatDate(startDate)} 至 ${formatDate(endDate)} 沒有任何成交明細紀錄`,
-              },
-            ],
-          };
-        }
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(filledHistoryDetailReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢歷史成交明細失敗：${errorMessage}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.filledDetailHistory(account, startDate, endDate);
+      },
+      {
+        errorMessage: "查詢歷史成交明細時發生錯誤"
       }
-    }
+    )
   );
 }
 

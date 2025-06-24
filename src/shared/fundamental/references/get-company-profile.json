@@ -1,0 +1,169 @@
+{
+  "description": "公司基本資料 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱"
+    },
+    "data.content.rawContent": {
+      "type": "object",
+      "description": "原始內容資料"
+    },
+    "data.content.rawContent.category": {
+      "type": "string",
+      "description": "商品類別"
+    },
+    "data.content.rawContent.companyName": {
+      "type": "string",
+      "description": "公司完整中文名稱"
+    },
+    "data.content.rawContent.shortName": {
+      "type": "string",
+      "description": "公司簡稱"
+    },
+    "data.content.rawContent.symbolId": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.content.rawContent.englishFullName": {
+      "type": "string",
+      "description": "公司英文完整名稱"
+    },
+    "data.content.rawContent.endlishShortName": {
+      "type": "string",
+      "description": "公司英文簡稱"
+    },
+    "data.content.rawContent.industry": {
+      "type": "string",
+      "description": "所屬行業別"
+    },
+    "data.content.rawContent.tel": {
+      "type": "string",
+      "description": "公司電話"
+    },
+    "data.content.rawContent.address": {
+      "type": "string",
+      "description": "公司地址"
+    },
+    "data.content.rawContent.chairman": {
+      "type": "string",
+      "description": "董事長姓名"
+    },
+    "data.content.rawContent.managers": {
+      "type": "string",
+      "description": "經理人資訊"
+    },
+    "data.content.rawContent.speaker": {
+      "type": "string",
+      "description": "發言人姓名"
+    },
+    "data.content.rawContent.speakerTitle": {
+      "type": "string",
+      "description": "發言人職稱"
+    },
+    "data.content.rawContent.speakerPhone": {
+      "type": "string",
+      "description": "發言人電話"
+    },
+    "data.content.rawContent.altSpeaker": {
+      "type": "string",
+      "description": "代理發言人姓名"
+    },
+    "data.content.rawContent.operations": {
+      "type": "string",
+      "description": "營業項目說明"
+    },
+    "data.content.rawContent.foundDate": {
+      "type": "string",
+      "description": "設立日期（民國年/月/日）"
+    },
+    "data.content.rawContent.taxId": {
+      "type": "string",
+      "description": "統一編號"
+    },
+    "data.content.rawContent.ipoDate": {
+      "type": "string",
+      "description": "IPO 日期（民國年/月/日）"
+    },
+    "data.content.rawContent.listDate": {
+      "type": "string",
+      "description": "上市日期（民國年/月/日）"
+    },
+    "data.content.rawContent.otcDate": {
+      "type": "string",
+      "description": "上櫃日期（民國年/月/日）"
+    },
+    "data.content.rawContent.emDate": {
+      "type": "string",
+      "description": "興櫃日期（民國年/月/日）"
+    },
+    "data.content.rawContent.capital": {
+      "type": "string",
+      "description": "實收資本額"
+    },
+    "data.content.rawContent.release": {
+      "type": "string",
+      "description": "已發行股份總數"
+    },
+    "data.content.rawContent.special": {
+      "type": "string",
+      "description": "特別股股數"
+    },
+    "data.content.rawContent.price": {
+      "type": "string",
+      "description": "每股面額"
+    },
+    "data.content.rawContent.transferAgency": {
+      "type": "string",
+      "description": "股務代理機構"
+    },
+    "data.content.rawContent.agencyTel": {
+      "type": "string",
+      "description": "股務代理機構電話"
+    },
+    "data.content.rawContent.agencyAddress": {
+      "type": "string",
+      "description": "股務代理機構地址"
+    },
+    "data.content.rawContent.accountingAgency": {
+      "type": "string",
+      "description": "簽證會計師事務所"
+    },
+    "data.content.rawContent.accounting1": {
+      "type": "string",
+      "description": "簽證會計師1"
+    },
+    "data.content.rawContent.accounting2": {
+      "type": "string",
+      "description": "簽證會計師2"
+    },
+    "data.content.rawContent.companyUrl": {
+      "type": "string",
+      "description": "公司網址"
+    },
+    "data.content.rawContent.prospectusUrl": {
+      "type": "string",
+      "description": "公開說明書網址"
+    },
+    "data.content.rawContent.shareholdersReportUrl": {
+      "type": "string",
+      "description": "股東會報告書網址"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "description": "重要日期查詢 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱（最近重要日期）"
+    },
+    "data.content.rawContent": {
+      "type": "object",
+      "description": "原始內容資料"
+    },
+    "data.content.rawContent.cshDivDate": {
+      "type": "string|null",
+      "description": "除息日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.risuYmd": {
+      "type": "string|null",
+      "description": "除權日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.cshdivPayDate": {
+      "type": "string|null",
+      "description": "現金股利發放日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.meetDate": {
+      "type": "string|null",
+      "description": "股東會日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.capitalReductionStopTradingDate": {
+      "type": "string|null",
+      "description": "減資停止交易日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.capitalReductionRecoverTradingDate": {
+      "type": "string|null",
+      "description": "減資恢復交易日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.parValueChangedStopTradingDate": {
+      "type": "string|null",
+      "description": "面額變更停止交易日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.parValueChangedRecoverTradingDate": {
+      "type": "string|null",
+      "description": "面額變更恢復交易日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.capitalIncreaseRisuYmd": {
+      "type": "string|null",
+      "description": "增資除權日期（ISO 8601 格式）"
+    },
+    "data.content.rawContent.updatedAt": {
+      "type": "string",
+      "description": "資料更新時間（ISO 8601 格式）"
+    }
+  }
+}

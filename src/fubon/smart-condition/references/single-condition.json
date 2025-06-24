@@ -1,0 +1,57 @@
+{
+  "description": "單一條件單 API 回傳格式",
+  "fields": {
+    "is_success": {
+      "type": "boolean",
+      "description": "API 執行成功狀態"
+    },
+    "message": {
+      "type": "string",
+      "description": "錯誤訊息（當 is_success 為 false 時）"
+    },
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.guid": {
+      "type": "string",
+      "description": "條件單唯一識別碼"
+    },
+    "data.account": {
+      "type": "string",
+      "description": "交易帳號"
+    },
+    "data.status": {
+      "type": "string",
+      "description": "條件單狀態"
+    },
+    "data.symbol": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.create_time": {
+      "type": "string",
+      "description": "建立時間"
+    },
+    "data.start_date": {
+      "type": "string",
+      "description": "監控開始日期"
+    },
+    "data.end_date": {
+      "type": "string",
+      "description": "監控結束日期"
+    },
+    "data.condition": {
+      "type": "object",
+      "description": "觸發條件設定"
+    },
+    "data.order": {
+      "type": "object",
+      "description": "委託單設定"
+    },
+    "data.tpsl": {
+      "type": "object",
+      "description": "停利停損設定（選填）"
+    }
+  }
+}

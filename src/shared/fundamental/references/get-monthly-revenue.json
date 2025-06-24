@@ -1,0 +1,117 @@
+{
+  "description": "近 5 年月營收資料 API 回傳格式",
+  "fields": {
+    "data": {
+      "type": "object",
+      "description": "回應資料容器"
+    },
+    "data.content": {
+      "type": "object",
+      "description": "內容容器"
+    },
+    "data.content.contentId": {
+      "type": "string",
+      "description": "內容識別碼"
+    },
+    "data.content.contentIdParams": {
+      "type": "array",
+      "description": "內容參數清單"
+    },
+    "data.content.specName": {
+      "type": "string",
+      "description": "規格名稱（近5年營收）"
+    },
+    "data.content.rawContent": {
+      "type": "array",
+      "description": "月營收資料清單"
+    },
+    "data.content.rawContent[].year": {
+      "type": "number",
+      "description": "年度"
+    },
+    "data.content.rawContent[].month": {
+      "type": "number",
+      "description": "月份"
+    },
+    "data.content.rawContent[].symbol_id": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.content.rawContent[].created_at": {
+      "type": "string",
+      "description": "資料建立時間（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].updated_at": {
+      "type": "string",
+      "description": "資料更新時間（ISO 8601 格式）"
+    },
+    "data.content.rawContent[].__v": {
+      "type": "number",
+      "description": "資料版本號"
+    },
+    "data.content.rawContent[].data": {
+      "type": "object",
+      "description": "營收資料"
+    },
+    "data.content.rawContent[].data.current": {
+      "type": "object",
+      "description": "當月營收資料"
+    },
+    "data.content.rawContent[].data.current.revenue": {
+      "type": "number",
+      "description": "當月營收（千元）"
+    },
+    "data.content.rawContent[].data.current.lastyear": {
+      "type": "number",
+      "description": "去年同期營收（千元）"
+    },
+    "data.content.rawContent[].data.current.diff": {
+      "type": "number",
+      "description": "營收差額（千元）"
+    },
+    "data.content.rawContent[].data.current.yoy": {
+      "type": "number",
+      "description": "年增率（%）"
+    },
+    "data.content.rawContent[].data.current.mom": {
+      "type": "number",
+      "description": "月增率（%）"
+    },
+    "data.content.rawContent[].data.current.momText": {
+      "type": "string|null",
+      "description": "月增率文字說明"
+    },
+    "data.content.rawContent[].data.current.yoyText": {
+      "type": "string|null",
+      "description": "年增率文字說明"
+    },
+    "data.content.rawContent[].data.accu": {
+      "type": "object",
+      "description": "累計營收資料"
+    },
+    "data.content.rawContent[].data.accu.revenue": {
+      "type": "number",
+      "description": "累計營收（千元）"
+    },
+    "data.content.rawContent[].data.accu.lastyear": {
+      "type": "number",
+      "description": "去年同期累計營收（千元）"
+    },
+    "data.content.rawContent[].data.accu.diff": {
+      "type": "number",
+      "description": "累計營收差額（千元）"
+    },
+    "data.content.rawContent[].data.accu.yoy": {
+      "type": "number",
+      "description": "累計年增率（%）"
+    },
+    "data.content.rawContent[].data.accu.momText": {
+      "type": "string|null",
+      "description": "累計月增率文字說明"
+    },
+    "data.content.rawContent[].data.accu.yoyText": {
+      "type": "string|null",
+      "description": "累計年增率文字說明"
+    }
+  }
+}

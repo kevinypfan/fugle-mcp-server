@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import daytradeStockInfoReference from "./references/daytrade-stock-info.json";
 import { FubonSDK } from "fubon-neo";
 import { Account } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
   
 /**
  * 註冊當沖資訊查詢工具到 MCP Server
@@ -15,46 +15,30 @@ export function registerDaytradeAndStockInfoTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'daytrade-stock-info', '查詢股票當沖資訊');
+  
   server.tool(
     "get_daytrade_stock_info",
-    "查詢股票當沖資訊",
+    description,
     {
       symbol: z.string().describe("股票代號，必須指定要查詢的股票")
     },
-    async ({ symbol }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'daytrade-stock-info',
+      async ({ symbol }) => {
         // 透過SDK查詢股票當沖資訊
         // 確保symbol不是undefined
         if (!symbol) {
-          return {
-            content: [
-              {
-                type: "text",
-                text: "請提供股票代號以查詢當沖資訊",
-              },
-            ],
-            isError: true,
-          };
+          throw new Error("請提供股票代號以查詢當沖資訊");
         }
         
-        const data = await sdk.stock.daytradeAndStockInfo(account, symbol);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(data, null, 2)}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(daytradeStockInfoReference, null, 2)}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `查詢股票當沖資訊時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.daytradeAndStockInfo(account, symbol);
+      },
+      {
+        errorMessage: "查詢股票當沖資訊時發生錯誤"
       }
-    }
+    )
   );
 }

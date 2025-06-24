@@ -1,0 +1,61 @@
+{
+  "description": "查詢時間切片委託明細 API 回傳格式",
+  "fields": {
+    "is_success": {
+      "type": "boolean",
+      "description": "API 執行成功狀態"
+    },
+    "message": {
+      "type": "string",
+      "description": "錯誤訊息（當 is_success 為 false 時）"
+    },
+    "data": {
+      "type": "object",
+      "description": "切片委託明細"
+    },
+    "data.batch_no": {
+      "type": "string",
+      "description": "切片批次號碼"
+    },
+    "data.account": {
+      "type": "string",
+      "description": "交易帳號"
+    },
+    "data.symbol": {
+      "type": "string",
+      "description": "股票代號"
+    },
+    "data.total_quantity": {
+      "type": "number",
+      "description": "總委託數量"
+    },
+    "data.executed_quantity": {
+      "type": "number",
+      "description": "已執行數量"
+    },
+    "data.remaining_quantity": {
+      "type": "number",
+      "description": "剩餘數量"
+    },
+    "data.slice_details": {
+      "type": "array",
+      "description": "切片執行明細陣列"
+    },
+    "data.slice_details[].slice_no": {
+      "type": "number",
+      "description": "切片序號"
+    },
+    "data.slice_details[].execution_time": {
+      "type": "string",
+      "description": "執行時間"
+    },
+    "data.slice_details[].quantity": {
+      "type": "number",
+      "description": "切片數量"
+    },
+    "data.slice_details[].status": {
+      "type": "string",
+      "description": "執行狀態"
+    }
+  }
+}

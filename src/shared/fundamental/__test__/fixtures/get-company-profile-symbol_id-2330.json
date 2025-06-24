@@ -1,0 +1,48 @@
+{
+    "data": {
+        "content": {
+            "contentId": "FCNT000001?symbol_id=2330",
+            "contentIdParams": [
+                "symbol_id"
+            ],
+            "specName": "基本資料",
+            "rawContent": {
+                "category": "stock",
+                "companyName": "台灣積體電路製造股份有限公司",
+                "shortName": "台積電",
+                "symbolId": "2330",
+                "englishFullName": "Taiwan Semiconductor Manufacturing Co., Ltd.",
+                "endlishShortName": "TSMC",
+                "industry": "半導體業",
+                "tel": "03-5636688",
+                "address": "新竹科學園區力行六路8號",
+                "chairman": "魏哲家",
+                "managers": "總裁: 魏哲家",
+                "speaker": "黃仁昭",
+                "speakerTitle": "資深副總經理暨財務長",
+                "speakerPhone": "03-563-6688",
+                "altSpeaker": "高孟華",
+                "operations": "依客戶之訂單與其提供之產品設計說明，以從事製造與銷售積體電路以及其他晶圓半導體裝置。提供前述產品之封裝與測試服務、積體電路之電腦輔助設計技術服務。提供製造光罩及其設計服務。",
+                "foundDate": "76/02/21",
+                "taxId": "22099131",
+                "ipoDate": "81/10/30",
+                "listDate": "83/09/05",
+                "otcDate": "",
+                "emDate": "",
+                "capital": "259,326,155,210元",
+                "release": "25,932,615,521股\r\n(含私募                  0股)",
+                "special": "0股",
+                "price": "新台幣                 10.0000元",
+                "transferAgency": "中國信託商業銀行 代理部",
+                "agencyTel": "02-6636-5566",
+                "agencyAddress": "台北市重慶南路一段83號5樓",
+                "accountingAgency": "勤業眾信聯合會計師事務所",
+                "accounting1": "吳世宗",
+                "accounting2": "林尚志",
+                "companyUrl": "https://www.tsmc.com",
+                "prospectusUrl": "https://doc.twse.com.tw/server-java/t57sb01?step=1&colorchg=1&co_id=2330&year=&seamon=&mtype=B&",
+                "shareholdersReportUrl": "https://doc.twse.com.tw/server-java/t57sb01?step=1&colorchg=1&co_id=2330&year=&mtype=F&"
+            }
+        }
+    }
+}

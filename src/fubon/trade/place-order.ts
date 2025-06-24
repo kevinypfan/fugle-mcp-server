@@ -1,5 +1,4 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import placeOrderReference from "./references/place-order.json";
 import { FubonSDK } from "fubon-neo";
 import {
   Account,
@@ -10,6 +9,7 @@ import {
   OrderType,
 } from "fubon-neo/trade";
 import { z } from "zod";
+import { loadToolMetadata, createToolHandler } from "../../shared/utils/index.js";
 
 /**
  * 註冊建立委託單工具到 MCP Server
@@ -22,13 +22,16 @@ export function registerPlaceOrderTool(
   sdk: FubonSDK,
   account: Account
 ) {
+  const currentDir = __dirname;
+  const { description } = loadToolMetadata(currentDir, 'place-order', '建立委託單');
+  
   server.tool(
     "place_order",
-    "建立委託單",
+    description,
     {
       buySell: z.enum(["Buy", "Sell"]).describe("買賣別：Buy = 買, Sell = 賣"),
       symbol: z.string().describe("股票代號，例如：2330"),
-      price: z.string().describe("委託價格"),
+      price: z.string().optional().describe("委託價格"),
       quantity: z.number().describe("委託數量"),
       marketType: z
         .enum(["Common", "Fixing", "IntradayOdd", "Odd", "Emg", "EmgOdd"])
@@ -50,18 +53,20 @@ export function registerPlaceOrderTool(
         ),
       userDef: z.string().optional().describe("使用者自定義內容"),
     },
-    async ({
-      buySell,
-      symbol,
-      price,
-      quantity,
-      marketType,
-      priceType,
-      timeInForce,
-      orderType,
-      userDef,
-    }) => {
-      try {
+    createToolHandler(
+      currentDir,
+      'place-order',
+      async ({
+        buySell,
+        symbol,
+        price,
+        quantity,
+        marketType,
+        priceType,
+        timeInForce,
+        orderType,
+        userDef,
+      }) => {
         if (process.env.ENABLE_ORDER !== "true") {
           throw new Error(
             "修改委託價格功能已停用！(啟用此功能請在環境變數中設定 ENABLE_ORDER 為 true )"
@@ -82,32 +87,11 @@ export function registerPlaceOrderTool(
         };
 
         // 透過SDK下單
-        const data = await sdk.stock.placeOrder(account, order, false);
-
-        const response = `API Response\n\`\`\`json\n${JSON.stringify(
-          data,
-          null,
-          2
-        )}\n\`\`\`\n\nField Description\n\`\`\`json\n${JSON.stringify(
-          placeOrderReference,
-          null,
-          2
-        )}\n\`\`\``;
-
-        return {
-          content: [{ type: "text", text: response }],
-        };
-      } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `建立委託單時發生錯誤: ${error || "未知錯誤"}`,
-            },
-          ],
-          isError: true,
-        };
+        return await sdk.stock.placeOrder(account, order, false);
+      },
+      {
+        errorMessage: "建立委託單時發生錯誤"
       }
-    }
+    )
   );
 }
