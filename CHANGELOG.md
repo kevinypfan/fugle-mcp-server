@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.15](https://github.com/fugle-dev/fugle-mcp-server/compare/v0.0.14...v0.0.15) (2025-06-24)
+
+
+### Features
+
+* add smart condition ([f765fb3](https://github.com/fugle-dev/fugle-mcp-server/commit/f765fb3a50d21d59f7ddf48168ae806f6a5e9f50))
+
 ## [0.0.14](https://github.com/fugle-dev/fugle-mcp-server/compare/v0.0.12...v0.0.14) (2025-05-16)
 
 ## [0.0.13](https://github.com/fugle-dev/fugle-mcp-server/compare/v0.0.12...v0.0.13) (2025-05-16)
